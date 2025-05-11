@@ -1,6 +1,7 @@
 
 "use client";
-import { useFormState, useFormStatus } from 'react-dom';
+import { useFormStatus } from 'react-dom';
+import { useActionState } from 'react';
 import { addOfferAction } from '../actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -31,7 +32,7 @@ function SubmitButton() {
 }
 
 export default function AddOfferPage() {
-  const [state, formAction] = useFormState(addOfferAction, initialState);
+  const [state, formAction] = useActionState(addOfferAction, initialState);
   const { toast } = useToast();
 
   useEffect(() => {

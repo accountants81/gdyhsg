@@ -1,6 +1,7 @@
 
 "use client";
-import { useFormState, useFormStatus } from 'react-dom';
+import { useFormStatus } from 'react-dom';
+import { useActionState } from 'react';
 import { addProductAction } from '../actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -30,7 +31,7 @@ function SubmitButton() {
 }
 
 export default function AddProductPage() {
-  const [state, formAction] = useFormState(addProductAction, initialState);
+  const [state, formAction] = useActionState(addProductAction, initialState);
   const { toast } = useToast();
   const [otherImageUrls, setOtherImageUrls] = useState<string[]>(['']); // Start with one empty input for other images
 

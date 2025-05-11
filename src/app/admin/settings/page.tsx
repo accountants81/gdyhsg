@@ -1,7 +1,8 @@
 
 "use client";
 
-import { useFormState, useFormStatus } from 'react-dom';
+import { useFormStatus } from 'react-dom';
+import { useActionState } from 'react';
 import { getSiteSettings, updateSiteSettingsAction } from './actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -29,7 +30,7 @@ function SubmitButton() {
 }
 
 export default function AdminSettingsPage() {
-  const [state, formAction] = useFormState(updateSiteSettingsAction, initialState);
+  const [state, formAction] = useActionState(updateSiteSettingsAction, initialState);
   const { toast } = useToast();
   const [currentSettings, setCurrentSettings] = useState<SiteSettings | null>(null);
   const [isLoadingSettings, setIsLoadingSettings] = useState(true);

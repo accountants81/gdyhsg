@@ -1,6 +1,7 @@
 
 "use client";
-import { useFormState, useFormStatus } from 'react-dom';
+import { useFormStatus } from 'react-dom';
+import { useActionState } from 'react';
 import { updateProductAction, getProductById } from '../../actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -37,7 +38,7 @@ interface EditProductPageProps {
 
 export default function EditProductPage({ params }: EditProductPageProps) {
   const { id: productId } = params;
-  const [state, formAction] = useFormState(updateProductAction.bind(null, productId), initialState);
+  const [state, formAction] = useActionState(updateProductAction.bind(null, productId), initialState);
   const { toast } = useToast();
   const [product, setProduct] = useState<Product | null>(null);
   const [isLoadingProduct, setIsLoadingProduct] = useState(true);

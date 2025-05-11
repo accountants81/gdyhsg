@@ -1,6 +1,7 @@
 
 "use client";
-import { useFormState, useFormStatus } from 'react-dom';
+import { useFormStatus } from 'react-dom';
+import { useActionState } from 'react';
 import { updateOfferAction, getOfferById } from '../../actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -39,7 +40,7 @@ interface EditOfferPageProps {
 
 export default function EditOfferPage({ params }: EditOfferPageProps) {
   const { id: offerId } = params;
-  const [state, formAction] = useFormState(updateOfferAction.bind(null, offerId), initialState);
+  const [state, formAction] = useActionState(updateOfferAction.bind(null, offerId), initialState);
   const { toast } = useToast();
   const [offer, setOffer] = useState<Offer | null>(null);
   const [isLoadingOffer, setIsLoadingOffer] = useState(true);
