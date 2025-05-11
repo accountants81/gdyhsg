@@ -1,25 +1,34 @@
 
 "use client";
 import Link from 'next/link';
-import { ShoppingCart, User, LogIn, HomeIcon, Settings, LayoutDashboard } from 'lucide-react';
+import { ShoppingCart, User, LogIn, HomeIcon, Settings, LayoutDashboard, LayoutGrid } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { SITE_NAME } from '@/lib/constants';
 import { useAuth } from '@/hooks/useAuth';
 import { useCart } from '@/hooks/useCart';
 import { Badge } from "@/components/ui/badge";
+import { useSidebar } from '@/components/ui/sidebar'; // Import useSidebar
 
 export default function Header() {
   const { user, isAdmin, logout } = useAuth();
   const { getCartItemCount } = useCart();
   const cartItemCount = getCartItemCount();
+  const { toggleSidebar, isMobile } = useSidebar(); // Get toggleSidebar and isMobile from context
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 max-w-screen-2xl items-center justify-between">
-        <Link href="/" className="mr-6 flex items-center space-x-2 rtl:ml-6 rtl:mr-0">
-          {/* Optional: Add a logo SVG or Image component here */}
-          <span className="font-bold text-xl sm:inline-block">{SITE_NAME}</span>
-        </Link>
+        <div className="flex items-center">
+          {isMobile && ( /* Show category toggle button only on mobile */
+            <Button variant="ghost" size="icon" onClick={toggleSidebar} className="me-2 md:hidden">
+              <LayoutGrid className="h-5 w-5" />
+              <span className="sr-only">فتح الأقسام</span>
+            </Button>
+          )}
+          <Link href="/" className="flex items-center space-x-2 rtl:space-x-reverse">
+            <span className="font-bold text-xl sm:inline-block">{SITE_NAME}</span>
+          </Link>
+        </div>
         
         <nav className="flex items-center gap-3 md:gap-4">
           <Link href="/" legacyBehavior passHref>

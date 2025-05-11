@@ -15,7 +15,8 @@ export default async function HomePage() {
 
   return (
     <MainLayout>
-      <div className="container mx-auto px-4">
+      {/* This container ensures the page content is centered and has a max-width within the full-width main layout area */}
+      <div className="w-full max-w-screen-2xl mx-auto px-4">
         {/* Hero Section Placeholder */}
         <section className="text-center py-12 bg-card rounded-lg shadow-md my-8">
           <h1 className="text-4xl font-bold mb-4 text-primary">مرحباً بك في AAAMO</h1>

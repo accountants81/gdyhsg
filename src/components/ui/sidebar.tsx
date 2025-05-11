@@ -1,3 +1,4 @@
+
 "use client"
 
 import * as React from "react"
@@ -145,6 +146,7 @@ const SidebarProvider = React.forwardRef<
               className
             )}
             ref={ref}
+            data-state={state} // Added data-state for styling based on sidebar state
             {...props}
           >
             {children}
