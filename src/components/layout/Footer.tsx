@@ -25,7 +25,12 @@ export default function Footer() {
               <li><Link href="/terms" className="text-muted-foreground hover:text-foreground">شروط الخدمة</Link></li>
             </ul>
           </div>
-          <div>
+          {/* In RTL, this "Contact Us" column is the leftmost. 
+              "جاي يمين قوي" (too far right/start) & "متاكل" (eaten) & "زحزح الكلام ناحيه الشمال شويه" (shift it left/end)
+              This implies content is too close to its right edge (start edge of the column in RTL) and needs to move leftwards (endwards).
+              `md:ps-4` adds padding-inline-start (padding-right in RTL) to this column's content on medium screens and up.
+          */}
+          <div className="md:ps-4"> 
             <h3 className="text-lg font-semibold mb-3">تواصل معنا</h3>
             <div className="flex space-x-4 rtl:space-x-reverse mb-4">
               <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="text-muted-foreground hover:text-foreground">
@@ -52,3 +57,4 @@ export default function Footer() {
     </footer>
   );
 }
+
