@@ -11,13 +11,13 @@ export interface Product {
   name: string; // Arabic name
   description: string; // Arabic description
   price: number; // EGP
-  imageUrl: string;
+  imageUrls: string[]; // Changed from imageUrl: string to support multiple images
   categorySlug: string;
   stock: number;
   // Add more fields as needed, e.g., brand, specifications
 }
 
-export interface CartItem extends Product {
+export interface CartItem extends Product { // Product already has imageUrls, so CartItem will too
   quantity: number;
 }
 
@@ -57,10 +57,15 @@ export interface Order {
 }
 
 export interface AdminStats {
+  totalRevenue: number;
+  monthlyRevenue: number; // For current month
   dailyOrders: number;
-  monthlyOrders: number;
-  registeredCustomers: number;
+  monthlyOrders: number; // For current month
+  newCustomersToday: number;
+  totalActiveCustomers: number; // Customers with orders
   totalProducts: number;
+  lowStockProductsCount: number; // Count of products with stock < 10
+  topSellingProducts: { name: string; count: number }[]; // Top 3-5
 }
 
 export interface Message {
@@ -71,4 +76,18 @@ export interface Message {
   content: string;
   createdAt: string; // ISO date string
   isRead: boolean;
+}
+
+export interface Offer {
+  id: string;
+  title: string; 
+  description?: string;
+  productId?: string; 
+  categorySlug?: string; 
+  discountPercentage?: number; 
+  startDate: string; // ISO date string
+  endDate: string; // ISO date string
+  imageUrl?: string; 
+  isActive: boolean;
+  couponCode?: string; // Optional coupon code for the offer
 }

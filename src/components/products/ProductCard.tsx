@@ -14,38 +14,39 @@ interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
   const { addToCart } = useCart();
+  const firstImage = product.imageUrls && product.imageUrls.length > 0 ? product.imageUrls[0] : 'https://picsum.photos/seed/placeholder/400/400';
 
   return (
-    <Card className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col h-full">
+    <Card className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col h-full group">
       <CardHeader className="p-0">
         <Link href={`/products/${product.id}`} className="block">
           <div className="aspect-square relative w-full overflow-hidden">
             <Image
-              src={product.imageUrl}
+              src={firstImage}
               alt={product.name}
               fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
               className="object-cover group-hover:scale-105 transition-transform duration-300"
               data-ai-hint="mobile accessory"
             />
           </div>
         </Link>
       </CardHeader>
-      <CardContent className="p-4 flex-grow">
+      <CardContent className="p-3 md:p-4 flex-grow">
         <Link href={`/products/${product.id}`} className="block">
-          <CardTitle className="text-lg font-semibold mb-1 truncate hover:text-primary transition-colors">
+          <CardTitle className="text-base md:text-lg font-semibold mb-1 truncate group-hover:text-primary transition-colors">
             {product.name}
           </CardTitle>
         </Link>
-        <CardDescription className="text-sm text-muted-foreground h-10 overflow-hidden text-ellipsis">
+        <CardDescription className="text-xs md:text-sm text-muted-foreground h-10 overflow-hidden text-ellipsis leading-tight">
           {product.description}
         </CardDescription>
       </CardContent>
-      <CardFooter className="p-4 flex items-center justify-between">
-        <p className="text-xl font-bold text-primary">
+      <CardFooter className="p-3 md:p-4 flex flex-col sm:flex-row items-stretch sm:items-center sm:justify-between gap-2">
+        <p className="text-lg md:text-xl font-bold text-primary self-center sm:self-auto">
           {product.price.toLocaleString('ar-EG', { style: 'currency', currency: 'EGP' })}
         </p>
-        <Button size="sm" onClick={() => addToCart(product)}>
+        <Button size="sm" onClick={() => addToCart(product)} className="w-full sm:w-auto">
           <ShoppingCart className="h-4 w-4 me-2" />
           أضف للسلة
         </Button>

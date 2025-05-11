@@ -11,7 +11,9 @@ import {
   MessageSquare,
   Settings,
   LogOut,
-  X
+  X,
+  BadgePercent, // Icon for Offers
+  BarChart3, // Icon for Statistics
 } from 'lucide-react';
 import {
   Sidebar,
@@ -27,13 +29,15 @@ import { Button } from '@/components/ui/button';
 import { SITE_NAME } from '@/lib/constants';
 import { useAuth } from '@/hooks/useAuth';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { SheetTitle } from '@/components/ui/sheet'; // Import SheetTitle
+import { SheetTitle } from '@/components/ui/sheet'; 
 
 const adminNavItems = [
   { href: '/admin/dashboard', label: 'لوحة التحكم الرئيسية', icon: LayoutDashboard },
   { href: '/admin/products', label: 'إدارة المنتجات', icon: Package },
+  { href: '/admin/offers', label: 'إدارة العروض', icon: BadgePercent },
   { href: '/admin/orders', label: 'إدارة الطلبات', icon: ShoppingCart },
   { href: '/admin/customers', label: 'إدارة العملاء', icon: Users },
+  { href: '/admin/statistics', label: 'الإحصائيات', icon: BarChart3 },
   { href: '/admin/messages', label: 'الرسائل الواردة', icon: MessageSquare },
   { href: '/admin/settings', label: 'إعدادات الحساب', icon: Settings },
 ];
@@ -41,7 +45,7 @@ const adminNavItems = [
 export default function AdminSidebar() {
   const pathname = usePathname();
   const { logout } = useAuth();
-  const { isMobile, openMobile, setOpenMobile } = useSidebar(); // Removed toggleSidebar as it's not used directly here for open/close
+  const { isMobile, openMobile, setOpenMobile } = useSidebar(); 
 
   const sidebarContent = (
     <>
@@ -104,6 +108,7 @@ export default function AdminSidebar() {
     return (
         <>
             <Sidebar side="right" collapsible="offcanvas" variant="sidebar" className="w-72">
+                 {/* SheetTitle is now part of sidebarContent when isMobile is true */}
                 {sidebarContent}
             </Sidebar>
         </>
@@ -116,4 +121,3 @@ export default function AdminSidebar() {
     </Sidebar>
   );
 }
-

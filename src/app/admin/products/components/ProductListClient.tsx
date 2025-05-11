@@ -11,8 +11,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-// Import server actions once created e.g.
-// import { deleteProductAction } from '../actions';
+import { deleteProductAction } from '../actions'; // Import server action
 
 interface ProductListClientProps {
   initialProducts: Product[];
@@ -38,16 +37,12 @@ export default function ProductListClient({ initialProducts }: ProductListClient
       return;
     }
     startTransition(async () => {
-      // Example of calling a server action
-      // const result = await deleteProductAction(productId);
-      // For now, simulate client-side deletion
-      try {
-        // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 500)); 
+      const result = await deleteProductAction(productId);
+      if (result.success) {
         setProducts(prev => prev.filter(p => p.id !== productId));
-        toast({ title: "نجاح", description: "تم حذف المنتج بنجاح." });
-      } catch (error) {
-        toast({ title: "خطأ", description: "فشل حذف المنتج.", variant: "destructive" });
+        toast({ title: "نجاح", description: result.message });
+      } else {
+        toast({ title: "خطأ", description: result.message, variant: "destructive" });
       }
     });
   };
@@ -97,7 +92,7 @@ export default function ProductListClient({ initialProducts }: ProductListClient
                 <TableRow key={product.id}>
                   <TableCell>
                     <Image
-                      src={product.imageUrl}
+                      src={(product.imageUrls && product.imageUrls.length > 0) ? product.imageUrls[0] : 'https://picsum.photos/seed/placeholder/50/50'}
                       alt={product.name}
                       width={50}
                       height={50}

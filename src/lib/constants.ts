@@ -1,5 +1,5 @@
-import type { Category, Governorate } from './types';
-import { Smartphone, Headphones, BatteryCharging, ShieldCheck, Cable, Grip, PenTool, Camera, Gamepad2, Watch, Sparkles, Focus, Speaker } from 'lucide-react';
+import type { Category, Governorate, Offer } from './types';
+import { Smartphone, Headphones, BatteryCharging, ShieldCheck, Cable, Grip, PenTool, Camera, Gamepad2, Watch, Sparkles, Focus, Speaker, Laptop, Radio, MemoryStick } from 'lucide-react';
 
 export const SITE_NAME = "AAAMO";
 
@@ -11,8 +11,10 @@ export const ADMIN_EMAILS: string[] = [
   "support.lead@aaamo.com",
   "product.manager@aaamo.com",
   "ceo@aaamo.com",
-  "lead.developer@aaamo.com", // Added more than 5
-  "marketing.specialist@aaamo.com"
+  "lead.developer@aaamo.com", 
+  "marketing.specialist@aaamo.com",
+  "operations.manager@aaamo.com",
+  "finance.controller@aaamo.com" 
 ]; 
 
 export const ADMIN_PASSWORD = "searchemail85@gmail.com"; // IMPORTANT: For demo only. Shared password for all admin accounts.
@@ -31,8 +33,46 @@ export const CATEGORIES: Category[] = [
   { id: '11', name: 'أدوات تنظيف وتعقيم', slug: 'cleaning-kits', icon: Sparkles },
   { id: '12', name: 'عدسات كاميرا إضافية', slug: 'phone-lenses', icon: Focus },
   { id: '13', name: 'مكبرات صوت بلوتوث', slug: 'bluetooth-speakers', icon: Speaker },
-  { id: '14', name: 'اكسسوارات أخرى متنوعة', slug: 'other-accessories', icon: Smartphone }, // Kept original "other" for fallback
+  { id: '14', name: 'اكسسوارات لابتوب وتابلت', slug: 'laptop-tablet-accessories', icon: Laptop },
+  { id: '15', name: 'اكسسوارات سيارة', slug: 'car-accessories', icon: Radio }, // Placeholder, could be more specific like Car Charger icon
+  { id: '16', name: 'بطاقات ذاكرة وفلاشات', slug: 'memory-cards-flashdrives', icon: MemoryStick },
+  { id: '17', name: 'اكسسوارات أخرى متنوعة', slug: 'other-accessories', icon: Smartphone }, 
 ];
+
+export const MOCK_OFFERS: Offer[] = [
+  {
+    id: 'offer_001',
+    title: 'خصم 20% على كل الجرابات!',
+    description: 'استفد من خصم 20% على جميع أنواع جرابات الموبايل. العرض ساري لفترة محدودة.',
+    categorySlug: 'cases',
+    discountPercentage: 20,
+    startDate: new Date().toISOString(),
+    endDate: new Date(new Date().setDate(new Date().getDate() + 7)).toISOString(), // 7 days from now
+    imageUrl: 'https://picsum.photos/seed/offer_cases/800/300',
+    isActive: true,
+    couponCode: 'CASE20'
+  },
+  {
+    id: 'offer_002',
+    title: 'شاحن سريع مجاني عند شراء سماعة لاسلكية',
+    description: 'احصل على شاحن سريع بقيمة 450 جنيه مجانًا عند شرائك أي سماعة أذن لاسلكية من مجموعتنا.',
+    productId: 'prod_002', // Link to a specific product if applicable, e.g., a popular headphone
+    startDate: new Date(new Date().setDate(new Date().getDate() - 3)).toISOString(), // Started 3 days ago
+    endDate: new Date(new Date().setDate(new Date().getDate() + 4)).toISOString(), // Ends in 4 days
+    imageUrl: 'https://picsum.photos/seed/offer_headphones_charger/800/300',
+    isActive: true,
+  },
+  {
+    id: 'offer_003',
+    title: 'عروض نهاية الأسبوع: تخفيضات تصل إلى 50% على اكسسوارات مختارة',
+    description: 'لا تفوت عروض نهاية الأسبوع! تخفيضات كبيرة على مجموعة متنوعة من الإكسسوارات.',
+    startDate: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + (5 - new Date().getDay() + 7) % 7).toISOString(), // Next Friday
+    endDate: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + (7 - new Date().getDay() + 7) % 7).toISOString(), // Next Sunday
+    imageUrl: 'https://picsum.photos/seed/offer_weekend/800/300',
+    isActive: false, // Will become active on Friday
+  }
+];
+
 
 export const EGYPTIAN_GOVERNORATES: Governorate[] = [
   { name: "القاهرة", shippingCost: 50 },
