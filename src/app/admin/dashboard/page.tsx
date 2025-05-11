@@ -5,22 +5,14 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { MOCK_PRODUCTS } from "@/data/products"; // For total products count
 
-// Mock data for stats - replace with actual data fetching
+// Mock data for stats - reset for transactional data
 const getAdminSummaryStats = async () => {
-  // Simulate some order data
-  const mockOrders = [
-    { totalAmount: 250, createdAt: new Date().toISOString() },
-    { totalAmount: 1200, createdAt: new Date(Date.now() - 86400000 * 1).toISOString() },
-  ];
-  
-  const today = new Date();
-  const startOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
-  
+  // Simulate an empty state for transactional data
   return {
-    totalRevenueToday: mockOrders.filter(o => new Date(o.createdAt).getTime() >= startOfToday).reduce((sum, o) => sum + o.totalAmount, 0),
-    newOrdersToday: mockOrders.filter(o => new Date(o.createdAt).getTime() >= startOfToday).length,
-    totalProducts: MOCK_PRODUCTS.length,
-    activeUsers: Math.floor(Math.random() * 50) + 10, // Mock active users
+    totalRevenueToday: 0,
+    newOrdersToday: 0,
+    totalProducts: MOCK_PRODUCTS.length, // This is a count of existing entities, not a transactional stat
+    activeUsers: 0, // Reset active users
   };
 };
 
@@ -48,9 +40,9 @@ export default async function AdminDashboardPage() {
             <div className="text-2xl font-bold">
               {stats.totalRevenueToday.toLocaleString('ar-EG', { style: 'currency', currency: 'EGP' })}
             </div>
-            <p className="text-xs text-muted-foreground">
-              +5.2% عن أمس (مثال)
-            </p>
+            {/* <p className="text-xs text-muted-foreground">
+              +0% عن أمس (تم التصفير)
+            </p> */}
           </CardContent>
         </Card>
         <Card>
@@ -60,9 +52,9 @@ export default async function AdminDashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">+{stats.newOrdersToday}</div>
-            <p className="text-xs text-muted-foreground">
-              إجمالي الطلبات هذا الشهر (مثال)
-            </p>
+            {/* <p className="text-xs text-muted-foreground">
+              إجمالي الطلبات هذا الشهر (تم التصفير)
+            </p> */}
           </CardContent>
         </Card>
         <Card>
@@ -84,9 +76,9 @@ export default async function AdminDashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">+{stats.activeUsers}</div>
-            <p className="text-xs text-muted-foreground">
-              +10 منذ الساعة الأخيرة (مثال)
-            </p>
+            {/* <p className="text-xs text-muted-foreground">
+              (تم التصفير)
+            </p> */}
           </CardContent>
         </Card>
       </div>
@@ -114,14 +106,12 @@ export default async function AdminDashboardPage() {
         <Card>
             <CardHeader>
             <CardTitle>أحدث الطلبات (مثال)</CardTitle>
-            <CardDescription>قائمة بأحدث 3 طلبات تم إجراؤها.</CardDescription>
+            <CardDescription>قائمة بأحدث الطلبات (سيتم تحديثها عند ورود طلبات جديدة).</CardDescription>
             </CardHeader>
             <CardContent>
             {/* Replace with actual recent orders list */}
             <ul className="space-y-2 text-sm">
-                <li className="flex justify-between"><span>طلب #12345</span> <span className="text-muted-foreground">قيد التجهيز</span></li>
-                <li className="flex justify-between"><span>طلب #12344</span> <span className="text-green-500">تم التوصيل</span></li>
-                <li className="flex justify-between"><span>طلب #12342</span> <span className="text-muted-foreground">قيد الانتظار</span></li>
+                <li className="flex justify-between"><span>لا توجد طلبات حديثة بعد.</span></li>
             </ul>
             <Button variant="link" asChild className="mt-2 p-0 h-auto">
                 <Link href="/admin/orders">عرض كل الطلبات</Link>
