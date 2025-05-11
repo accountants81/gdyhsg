@@ -1,7 +1,7 @@
 
 "use client";
 import Link from 'next/link';
-import { ShoppingCart, User, LogIn, HomeIcon, Settings, LayoutDashboard, LayoutGrid, LogOut, Tag } from 'lucide-react'; // Added Tag icon
+import { ShoppingCart, User, LogIn, HomeIcon, Settings, LayoutDashboard, LayoutGrid, LogOut, Tag, Mail, Truck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { SITE_NAME } from '@/lib/constants';
 import { useAuth } from '@/hooks/useAuth';
@@ -17,9 +17,9 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 max-w-screen-2xl items-center justify-between px-2 sm:px-4"> {/* Reduced horizontal padding on smallest screens */}
-        <div className="flex items-center gap-1 sm:gap-2"> {/* Added gap here for consistency */}
-          {isMobile && ( /* Show category toggle button only on mobile */
+      <div className="container flex h-16 max-w-screen-2xl items-center justify-between px-2 sm:px-4">
+        <div className="flex items-center gap-1 sm:gap-2">
+          {isMobile && (
             <Button variant="ghost" size="icon" onClick={toggleSidebar} className="md:hidden">
               <LayoutGrid className="h-5 w-5" />
               <span className="sr-only">فتح الأقسام</span>
@@ -30,8 +30,7 @@ export default function Header() {
           </Link>
         </div>
         
-        <nav className="flex items-center gap-0.5 sm:gap-1 md:gap-2"> {/* More aggressive gaps for nav items */}
-          {/* Home Button */}
+        <nav className="flex items-center gap-0.5 sm:gap-1 md:gap-2">
           <Link href="/" legacyBehavior passHref>
             <Button variant="ghost" size="icon" className="sm:hidden text-sm" aria-label="الرئيسية">
               <HomeIcon className="h-5 w-5" />
@@ -43,7 +42,6 @@ export default function Header() {
             </Button>
           </Link>
 
-          {/* Offers Button */}
           <Link href="/offers" legacyBehavior passHref>
             <Button variant="ghost" size="icon" className="sm:hidden text-sm" aria-label="العروض">
               <Tag className="h-5 w-5" />
@@ -54,8 +52,29 @@ export default function Header() {
               <Tag className="h-4 w-4 me-1" /> العروض
             </Button>
           </Link>
+
+          <Link href="/track-order" legacyBehavior passHref>
+            <Button variant="ghost" size="icon" className="sm:hidden text-sm" aria-label="تتبع طلبك">
+              <Truck className="h-5 w-5" />
+            </Button>
+          </Link>
+          <Link href="/track-order" legacyBehavior passHref>
+            <Button variant="ghost" size="sm" className="hidden sm:inline-flex text-sm">
+              <Truck className="h-4 w-4 me-1" /> تتبع طلبك
+            </Button>
+          </Link>
+
+          <Link href="/contact" legacyBehavior passHref>
+            <Button variant="ghost" size="icon" className="sm:hidden text-sm" aria-label="تواصل معنا">
+              <Mail className="h-5 w-5" />
+            </Button>
+          </Link>
+          <Link href="/contact" legacyBehavior passHref>
+            <Button variant="ghost" size="sm" className="hidden sm:inline-flex text-sm">
+              <Mail className="h-4 w-4 me-1" /> تواصل معنا
+            </Button>
+          </Link>
           
-          {/* Cart Button */}
           <Link href="/cart" legacyBehavior passHref>
             <Button variant="ghost" size="icon" className="sm:hidden relative text-sm" aria-label="السلة">
               <ShoppingCart className="h-5 w-5" />

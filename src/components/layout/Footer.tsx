@@ -1,14 +1,14 @@
 
 import Link from 'next/link';
-import { Facebook, Instagram, MessageCircle, Phone } from 'lucide-react'; 
-import { getSiteSettings } from '@/app/admin/settings/actions'; // Assuming actions.ts is in admin/settings
+import { Facebook, Instagram, MessageCircle, Phone, Mail } from 'lucide-react'; 
+import { getSiteSettings } from '@/app/admin/settings/actions'; 
 
 export default async function Footer() {
   const currentYear = new Date().getFullYear();
   const settings = await getSiteSettings();
 
   const whatsappLink = settings.whatsappNumber 
-    ? `https://wa.me/${settings.whatsappNumber.replace(/\+/g, '')}` 
+    ? `https://wa.me/${settings.whatsappNumber.replace(/\+/g, '').replace(/\s/g, '')}` 
     : '#';
 
   return (
@@ -28,14 +28,15 @@ export default async function Footer() {
             <ul className="space-y-2 text-sm">
               <li><Link href="/about" className="text-muted-foreground hover:text-foreground">من نحن</Link></li>
               <li><Link href="/contact" className="text-muted-foreground hover:text-foreground">تواصل معنا</Link></li>
+              <li><Link href="/track-order" className="text-muted-foreground hover:text-foreground">تتبع طلبك</Link></li>
               <li><Link href="/privacy" className="text-muted-foreground hover:text-foreground">سياسة الخصوصية</Link></li>
               <li><Link href="/terms" className="text-muted-foreground hover:text-foreground">شروط الخدمة</Link></li>
             </ul>
           </div>
           
           <div className="md:col-span-1"> 
-            <h3 className="text-lg font-semibold mb-3 md:text-start">تواصل معنا</h3>
-            <div className="flex space-x-4 rtl:space-x-reverse mb-4 md:justify-start">
+            <h3 className="text-lg font-semibold mb-3 md:text-start text-center">تواصل معنا</h3>
+            <div className="flex space-x-4 rtl:space-x-reverse mb-4 md:justify-start justify-center">
               {settings.facebookUrl && (
                 <a href={settings.facebookUrl} target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="text-muted-foreground hover:text-foreground">
                   <Facebook size={24} />
@@ -56,13 +57,20 @@ export default async function Footer() {
                   <Phone size={24} />
                 </a>
               )}
+               {settings.email && (
+                 <a href={`mailto:${settings.email}`} aria-label="Email" className="text-muted-foreground hover:text-foreground">
+                  <Mail size={24} />
+                </a>
+              )}
             </div>
-            {settings.email && (
-              <p className="text-sm text-muted-foreground md:text-start">البريد الإلكتروني: <a href={`mailto:${settings.email}`} className="hover:text-foreground">{settings.email}</a></p>
-            )}
-            {settings.phoneNumber && (
-              <p className="text-sm text-muted-foreground md:text-start">رقم الهاتف: <a href={`tel:${settings.phoneNumber}`} className="hover:text-foreground" dir="ltr">{settings.phoneNumber}</a></p>
-            )}
+             <div className="text-sm text-muted-foreground md:text-start text-center space-y-1">
+                {settings.email && (
+                <p>البريد: <a href={`mailto:${settings.email}`} className="hover:text-foreground">{settings.email}</a></p>
+                )}
+                {settings.phoneNumber && (
+                <p>الهاتف: <a href={`tel:${settings.phoneNumber}`} className="hover:text-foreground" dir="ltr">{settings.phoneNumber}</a></p>
+                )}
+            </div>
           </div>
 
         </div>

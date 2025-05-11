@@ -54,18 +54,7 @@ export interface Order {
   paymentMethod: 'vodafone_cash' | 'fawry' | 'cod'; // Arabic equivalents for display
   status: 'pending' | 'processing' | 'shipping' | 'delivered' | 'on_hold' | 'rejected' | 'cancelled'; // Arabic equivalents for display
   createdAt: string; // ISO date string
-}
-
-export interface AdminStats {
-  totalRevenue: number;
-  monthlyRevenue: number; // For current month
-  dailyOrders: number;
-  monthlyOrders: number; // For current month
-  newCustomersToday: number;
-  totalActiveCustomers: number; // Customers with orders
-  totalProducts: number;
-  lowStockProductsCount: number; // Count of products with stock < 10
-  topSellingProducts: { name: string; count: number }[]; // Top 3-5
+  // Optional: Add trackingNumber, updatedAt, notes, etc.
 }
 
 export interface Message {
@@ -99,4 +88,16 @@ export interface SiteSettings {
   phoneNumber: string;
   email: string;
   siteName?: string; // Optional, as SITE_NAME is also in constants
+}
+
+export interface AdminStats {
+  totalRevenue: number;
+  monthlyRevenue: number; // For current month
+  dailyOrders: number;
+  monthlyOrders: number; // For current month
+  newCustomersToday: number;
+  totalActiveCustomers: number; // Customers with orders
+  totalProducts: number;
+  lowStockProductsCount: number; // Count of products with stock < 10
+  topSellingProducts: { name: string; count: number }[]; // Top 3-5
 }
