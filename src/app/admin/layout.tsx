@@ -49,12 +49,16 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
   return (
     <SidebarProvider defaultOpen={true}> {/* Admin sidebar usually default open on desktop */}
-        <div className="flex min-h-screen w-full flex-col bg-muted/40">
+        <div className="flex min-h-screen w-full flex-col bg-muted/40 max-w-full overflow-x-hidden"> {/* Ensure full width and prevent overflow */}
             <AdminSidebar />
-            <div className="flex flex-col sm:gap-4 sm:py-4 sm:pe-14 md:pe-0 md:ms-[calc(var(--sidebar-width-icon)_-_1rem)] lg:ms-[calc(var(--sidebar-width)_-_1rem)] group-data-[collapsible=icon]:md:ms-[calc(var(--sidebar-width-icon)_-_1rem)] group-data-[state=expanded]:md:ms-[calc(var(--sidebar-width)_-_1rem)] transition-[margin-left] duration-300 ease-in-out">
-              {/* The above ms needs careful adjustment with the new sidebar component. Let's simplify. */}
-            {/* <div className="flex flex-col sm:gap-4 sm:py-4 sm:ps-14"> Default padding-left for collapsed sidebar */}
-            <div className="flex flex-col flex-1 md:ps-[5rem] lg:ps-[16rem] peer-data-[state=collapsed]:md:ps-[5rem] transition-all duration-300 ease-in-out">
+            {/*
+              AdminSidebar uses side="right". In RTL, this is positioned on the left (right:0 CSS).
+              So, the main content area needs padding on its left.
+              In Tailwind with RTL, `pe-` (padding-end) applies to the left.
+              The values 5rem and 16rem are used here. Sidebar icon width is 3rem, expanded is 16rem (md:w-64).
+              5rem for collapsed state provides 2rem extra spacing.
+            */}
+            <div className="flex flex-col flex-1 md:pe-[5rem] lg:pe-[16rem] peer-data-[state=collapsed]:md:pe-[5rem] transition-all duration-300 ease-in-out">
                 <AdminHeader />
                 <main className="flex-1 p-4 sm:px-6 sm:py-0 md:gap-8">
                     {children}
@@ -64,3 +68,4 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     </SidebarProvider>
   );
 }
+

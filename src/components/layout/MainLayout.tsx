@@ -13,29 +13,28 @@ interface MainLayoutProps {
 export default function MainLayout({ children }: MainLayoutProps) {
   return (
     <SidebarProvider defaultOpen={false}> {/* Default to closed on mobile, controlled by trigger */}
-      <div className="flex flex-col min-h-screen">
+      <div className="flex flex-col min-h-screen w-full max-w-full overflow-x-hidden"> {/* Ensure full width and prevent overflow */}
         <Header />
-        {/* The main flex container now takes full width. CategorySidebar is on the right (start in RTL) */}
         <div className="flex flex-1 w-full">
-          {/* The main content area needs padding-start to account for the fixed CategorySidebar */}
-          {/* It uses group-data-state from SidebarProvider to adjust padding */}
           <main
             className={cn(
-              "flex-1 py-8 px-4 w-full", // Base padding & ensure it takes width
-              // Default (collapsed) state for desktop: padding for icon sidebar (3rem)
-              "md:ps-[var(--sidebar-width-icon)]",
-              // Expanded state for desktop: padding for full sidebar (16rem)
-              "group-data-[state=expanded]/sidebar-wrapper:md:ps-[var(--sidebar-width)]",
-              "transition-[padding-left] duration-300 ease-in-out" // Use padding-left for RTL ps
+              "flex-1 py-8 px-4 w-full", 
+              // CategorySidebar uses side="right". In RTL (dir="rtl"), this means it's positioned with `right:0`, appearing on the screen's left.
+              // So, main content needs padding on its left side.
+              // In Tailwind with RTL, `pe-` (padding-end) applies to the left.
+              "md:pe-[var(--sidebar-width-icon)]", 
+              "group-data-[state=expanded]/sidebar-wrapper:md:pe-[var(--sidebar-width)]",
+              // The CSS property that `pe-` modifies in RTL is `padding-left`.
+              "transition-[padding-left] duration-300 ease-in-out"
             )}
           >
-            {/* Children like HomePage can use 'container mx-auto' for their own content centering */}
             {children}
           </main>
-          <CategorySidebar /> {/* Sidebar rendered after main, will be on the right due to flex and RTL */}
+          <CategorySidebar /> {/* Sidebar rendered after main. In RTL, flex items are reversed, but fixed positioning of sidebar overrides this. */}
         </div>
         <Footer />
       </div>
     </SidebarProvider>
   );
 }
+
