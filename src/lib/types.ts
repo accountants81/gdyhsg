@@ -91,3 +91,12 @@ export interface Offer {
   isActive: boolean;
   couponCode?: string; // Optional coupon code for the offer
 }
+
+export interface SiteSettings {
+  facebookUrl: string;
+  instagramUrl: string;
+  whatsappNumber: string; // Should include country code e.g., +201234567890
+  phoneNumber: string;
+  email: string;
+  siteName?: string; // Optional, as SITE_NAME is also in constants
+}

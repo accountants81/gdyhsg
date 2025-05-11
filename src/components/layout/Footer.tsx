@@ -1,10 +1,15 @@
 
 import Link from 'next/link';
 import { Facebook, Instagram, MessageCircle, Phone } from 'lucide-react'; 
-import { SITE_NAME } from '@/lib/constants';
+import { getSiteSettings } from '@/app/admin/settings/actions'; // Assuming actions.ts is in admin/settings
 
-export default function Footer() {
+export default async function Footer() {
   const currentYear = new Date().getFullYear();
+  const settings = await getSiteSettings();
+
+  const whatsappLink = settings.whatsappNumber 
+    ? `https://wa.me/${settings.whatsappNumber.replace(/\+/g, '')}` 
+    : '#';
 
   return (
     <footer className="border-t border-border/40 bg-background/95">
@@ -12,7 +17,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           
           <div className="md:col-span-1">
-            <h3 className="text-lg font-semibold mb-3">{SITE_NAME}</h3>
+            <h3 className="text-lg font-semibold mb-3">{settings.siteName || "AAAMO"}</h3>
             <p className="text-sm text-muted-foreground">
               وجهتك الأولى لأحدث وأفضل إكسسوارات الموبايل في مصر. جودة عالية، أسعار تنافسية، وخدمة عملاء مميزة.
             </p>
@@ -31,26 +36,38 @@ export default function Footer() {
           <div className="md:col-span-1"> 
             <h3 className="text-lg font-semibold mb-3 md:text-start">تواصل معنا</h3>
             <div className="flex space-x-4 rtl:space-x-reverse mb-4 md:justify-start">
-              <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="text-muted-foreground hover:text-foreground">
-                <Facebook size={24} />
-              </a>
-              <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-muted-foreground hover:text-foreground">
-                <Instagram size={24} />
-              </a>
-              <a href="https://wa.me/YOUR_WHATSAPP_NUMBER" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="text-muted-foreground hover:text-foreground">
-                <MessageCircle size={24} /> 
-              </a>
-               <a href="tel:YOUR_PHONE_NUMBER" aria-label="Phone" className="text-muted-foreground hover:text-foreground">
-                <Phone size={24} />
-              </a>
+              {settings.facebookUrl && (
+                <a href={settings.facebookUrl} target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="text-muted-foreground hover:text-foreground">
+                  <Facebook size={24} />
+                </a>
+              )}
+              {settings.instagramUrl && (
+                <a href={settings.instagramUrl} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-muted-foreground hover:text-foreground">
+                  <Instagram size={24} />
+                </a>
+              )}
+              {settings.whatsappNumber && (
+                <a href={whatsappLink} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="text-muted-foreground hover:text-foreground">
+                  <MessageCircle size={24} /> 
+                </a>
+              )}
+              {settings.phoneNumber && (
+                 <a href={`tel:${settings.phoneNumber}`} aria-label="Phone" className="text-muted-foreground hover:text-foreground">
+                  <Phone size={24} />
+                </a>
+              )}
             </div>
-            <p className="text-sm text-muted-foreground md:text-start">البريد الإلكتروني: <a href="mailto:info@aaamo.com" className="hover:text-foreground">info@aaamo.com</a></p>
-            <p className="text-sm text-muted-foreground md:text-start">رقم الهاتف: <a href="tel:+201234567890" className="hover:text-foreground" dir="ltr">+20 123 456 7890</a></p>
+            {settings.email && (
+              <p className="text-sm text-muted-foreground md:text-start">البريد الإلكتروني: <a href={`mailto:${settings.email}`} className="hover:text-foreground">{settings.email}</a></p>
+            )}
+            {settings.phoneNumber && (
+              <p className="text-sm text-muted-foreground md:text-start">رقم الهاتف: <a href={`tel:${settings.phoneNumber}`} className="hover:text-foreground" dir="ltr">{settings.phoneNumber}</a></p>
+            )}
           </div>
 
         </div>
         <div className="text-center text-sm text-muted-foreground pt-8 border-t border-border/40">
-          © {currentYear} {SITE_NAME}. جميع الحقوق محفوظة.
+          © {currentYear} {settings.siteName || "AAAMO"}. جميع الحقوق محفوظة.
         </div>
       </div>
     </footer>
