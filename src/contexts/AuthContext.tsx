@@ -3,12 +3,12 @@
 
 import type { User } from '@/lib/types';
 import React, { createContext, useState, useEffect, ReactNode } from 'react';
-import { ADMIN_EMAIL } from '@/lib/constants';
+import { ADMIN_EMAILS, ADMIN_PASSWORD } from '@/lib/constants';
 
 interface AuthContextType {
   user: User | null;
   isAdmin: boolean;
-  login: (email: string, pass: string) => Promise<boolean>; // Simulate async login
+  login: (email: string, pass: string) => Promise<{ success: boolean; isAdminUser: boolean }>;
   logout: () => void;
   loading: boolean;
 }
@@ -21,39 +21,42 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    // Try to load user from localStorage on initial mount
     setLoading(true);
     const storedUser = localStorage.getItem('aaamo-user');
     if (storedUser) {
       const parsedUser: User = JSON.parse(storedUser);
       setUser(parsedUser);
-      setIsAdmin(parsedUser.email === ADMIN_EMAIL && parsedUser.role === 'admin');
+      // Check if the stored user's email is in the admin list
+      setIsAdmin(ADMIN_EMAILS.includes(parsedUser.email.toLowerCase()) && parsedUser.role === 'admin');
     }
     setLoading(false);
   }, []);
 
-  const login = async (email: string, pass: string): Promise<boolean> => {
+  const login = async (email: string, pass: string): Promise<{ success: boolean; isAdminUser: boolean }> => {
     setLoading(true);
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise(resolve => setTimeout(resolve, 500)); // Simulate API call
 
-    if (email === ADMIN_EMAIL && pass === ADMIN_EMAIL) { // Using ADMIN_EMAIL as password for demo
-      const adminUser: User = { id: 'admin-user', email: ADMIN_EMAIL, role: 'admin', name: 'المطور' };
+    const lowerCaseEmail = email.toLowerCase();
+    const isActualAdmin = ADMIN_EMAILS.includes(lowerCaseEmail) && pass === ADMIN_PASSWORD;
+
+    if (isActualAdmin) {
+      const adminUser: User = { id: `admin-${lowerCaseEmail}`, email: lowerCaseEmail, role: 'admin', name: 'Admin User' };
       setUser(adminUser);
       setIsAdmin(true);
       localStorage.setItem('aaamo-user', JSON.stringify(adminUser));
       setLoading(false);
-      return true;
+      return { success: true, isAdminUser: true };
     } else if (email && pass) { // Simulate a generic customer login
-      const customerUser: User = { id: `cust-${Date.now()}`, email, role: 'customer', name: 'عميل جديد' };
+      const customerUser: User = { id: `cust-${Date.now()}`, email: lowerCaseEmail, role: 'customer', name: 'عميل جديد' };
       setUser(customerUser);
       setIsAdmin(false);
       localStorage.setItem('aaamo-user', JSON.stringify(customerUser));
       setLoading(false);
-      return true;
+      return { success: true, isAdminUser: false };
     }
+    
     setLoading(false);
-    return false; // Login failed
+    return { success: false, isAdminUser: false };
   };
 
   const logout = () => {

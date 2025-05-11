@@ -2,8 +2,18 @@ import type { Category, Governorate } from './types';
 import { Smartphone, Headphones, BatteryCharging, ShieldCheck, Cable } from 'lucide-react';
 
 export const SITE_NAME = "AAAMO";
-export const ADMIN_EMAIL = "searchemail85@gmail.com";
-export const ADMIN_PASSWORD = "searchemail85@gmail.com"; // IMPORTANT: For demo only. NEVER store plaintext passwords in production.
+
+// Updated for multiple admin users
+export const ADMIN_EMAILS: string[] = [
+  "searchemail85@gmail.com",
+  "admin.user1@aaamo.com",
+  "dev.user2@aaamo.com",
+  "support.lead@aaamo.com",
+  "product.manager@aaamo.com",
+  "ceo@aaamo.com" 
+]; // More than five admin emails
+
+export const ADMIN_PASSWORD = "searchemail85@gmail.com"; // IMPORTANT: For demo only. Shared password for all admin accounts.
 
 export const CATEGORIES: Category[] = [
   { id: '1', name: 'جرابات', slug: 'cases', icon: Smartphone },

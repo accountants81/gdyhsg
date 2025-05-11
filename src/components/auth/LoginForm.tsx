@@ -24,7 +24,7 @@ type LoginFormInputs = z.infer<typeof loginSchema>;
 
 export default function LoginForm() {
   const router = useRouter();
-  const { login, isAdmin } = useAuth();
+  const { login } = useAuth(); // Get login function from context
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -34,7 +34,7 @@ export default function LoginForm() {
 
   const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
     setIsLoading(true);
-    const success = await login(data.email, data.password);
+    const { success, isAdminUser } = await login(data.email.toLowerCase(), data.password);
     setIsLoading(false);
 
     if (success) {
@@ -42,12 +42,7 @@ export default function LoginForm() {
         title: "تم تسجيل الدخول بنجاح",
         description: "مرحباً بك مرة أخرى!",
       });
-      // Check isAdmin status *after* login sets it
-      // This requires login function to correctly set isAdmin state
-      // For now, we use a slight delay to ensure context updates, or rely on effect in AuthProvider
-      // A better way is for login to return the user object including role.
-      // For this demo, routing decision is simplified.
-      if (data.email === "searchemail85@gmail.com") { // Simple check for demo
+      if (isAdminUser) {
          router.push('/admin/dashboard');
       } else {
          router.push('/');
