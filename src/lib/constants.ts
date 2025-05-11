@@ -1,5 +1,5 @@
 import type { Category, Governorate } from './types';
-import { Smartphone, Headphones, BatteryCharging, ShieldCheck, Cable } from 'lucide-react';
+import { Smartphone, Headphones, BatteryCharging, ShieldCheck, Cable, Grip, PenTool, Camera, Gamepad2, Watch, Sparkles, Focus, Speaker } from 'lucide-react';
 
 export const SITE_NAME = "AAAMO";
 
@@ -10,18 +10,28 @@ export const ADMIN_EMAILS: string[] = [
   "dev.user2@aaamo.com",
   "support.lead@aaamo.com",
   "product.manager@aaamo.com",
-  "ceo@aaamo.com" 
-]; // More than five admin emails
+  "ceo@aaamo.com",
+  "lead.developer@aaamo.com", // Added more than 5
+  "marketing.specialist@aaamo.com"
+]; 
 
 export const ADMIN_PASSWORD = "searchemail85@gmail.com"; // IMPORTANT: For demo only. Shared password for all admin accounts.
 
 export const CATEGORIES: Category[] = [
-  { id: '1', name: 'جرابات', slug: 'cases', icon: Smartphone },
-  { id: '2', name: 'سماعات', slug: 'headphones', icon: Headphones },
+  { id: '1', name: 'جرابات وحافظات', slug: 'cases', icon: Smartphone },
+  { id: '2', name: 'سماعات رأس وأذن', slug: 'headphones', icon: Headphones },
   { id: '3', name: 'شواحن وباور بانك', slug: 'chargers-powerbanks', icon: BatteryCharging },
   { id: '4', name: 'اسكرينات حماية', slug: 'screen-protectors', icon: ShieldCheck },
   { id: '5', name: 'كابلات ووصلات', slug: 'cables-adapters', icon: Cable },
-  { id: '6', name: 'اكسسوارات أخرى', slug: 'other-accessories', icon: Smartphone },
+  { id: '6', name: 'حوامل ومثبتات', slug: 'mounts-holders', icon: Grip },
+  { id: '7', name: 'أقلام ستايلس', slug: 'stylus-pens', icon: PenTool },
+  { id: '8', name: 'عصي سيلفي وترايبود', slug: 'selfie-sticks-tripods', icon: Camera },
+  { id: '9', name: 'اكسسوارات الألعاب', slug: 'gaming-accessories', icon: Gamepad2 },
+  { id: '10', name: 'اكسسوارات الساعات الذكية', slug: 'wearable-accessories', icon: Watch },
+  { id: '11', name: 'أدوات تنظيف وتعقيم', slug: 'cleaning-kits', icon: Sparkles },
+  { id: '12', name: 'عدسات كاميرا إضافية', slug: 'phone-lenses', icon: Focus },
+  { id: '13', name: 'مكبرات صوت بلوتوث', slug: 'bluetooth-speakers', icon: Speaker },
+  { id: '14', name: 'اكسسوارات أخرى متنوعة', slug: 'other-accessories', icon: Smartphone }, // Kept original "other" for fallback
 ];
 
 export const EGYPTIAN_GOVERNORATES: Governorate[] = [
