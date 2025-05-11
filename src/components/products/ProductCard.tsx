@@ -25,29 +25,29 @@ export default function ProductCard({ product }: ProductCardProps) {
               src={firstImage}
               alt={product.name}
               fill
-              sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+              sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, 20vw"
               className="object-cover group-hover:scale-105 transition-transform duration-300"
               data-ai-hint="mobile accessory"
             />
           </div>
         </Link>
       </CardHeader>
-      <CardContent className="p-3 md:p-4 flex-grow">
+      <CardContent className="p-2 md:p-3 flex-grow">
         <Link href={`/products/${product.id}`} className="block">
-          <CardTitle className="text-base md:text-lg font-semibold mb-1 truncate group-hover:text-primary transition-colors">
+          <CardTitle className="text-sm md:text-base font-semibold mb-1 truncate group-hover:text-primary transition-colors">
             {product.name}
           </CardTitle>
         </Link>
-        <CardDescription className="text-xs md:text-sm text-muted-foreground h-10 overflow-hidden text-ellipsis leading-tight">
+        <CardDescription className="text-xs text-muted-foreground min-h-[2.5rem] max-h-[2.5rem] overflow-hidden text-ellipsis leading-tight">
           {product.description}
         </CardDescription>
       </CardContent>
-      <CardFooter className="p-3 md:p-4 flex flex-col sm:flex-row items-stretch sm:items-center sm:justify-between gap-2">
-        <p className="text-lg md:text-xl font-bold text-primary self-center sm:self-auto">
+      <CardFooter className="p-2 md:p-3 flex flex-col sm:flex-row items-stretch sm:items-center sm:justify-between gap-2">
+        <p className="text-base md:text-lg font-bold text-primary self-center sm:self-auto">
           {product.price.toLocaleString('ar-EG', { style: 'currency', currency: 'EGP' })}
         </p>
-        <Button size="sm" onClick={() => addToCart(product)} className="w-full sm:w-auto">
-          <ShoppingCart className="h-4 w-4 me-2" />
+        <Button size="sm" onClick={() => addToCart(product)} className="w-full sm:w-auto text-xs sm:text-sm">
+          <ShoppingCart className="h-3 w-3 sm:h-4 sm:w-4 me-1 sm:me-2" />
           أضف للسلة
         </Button>
       </CardFooter>
