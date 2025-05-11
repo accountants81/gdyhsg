@@ -10,21 +10,25 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
-  // SidebarTrigger, // No longer needed here
   useSidebar,
 } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
-import { X } from 'lucide-react'; // PanelRightOpen is no longer needed here
+import { X } from 'lucide-react'; 
 import { ScrollArea } from '@/components/ui/scroll-area'; 
+import { SheetTitle } from '@/components/ui/sheet'; // Import SheetTitle
 
 export default function CategorySidebar() {
-  const { isMobile, setOpenMobile } = useSidebar(); // Removed open, toggleSidebar as trigger is elsewhere
+  const { isMobile, setOpenMobile } = useSidebar(); 
 
   const categoriesContent = (
       <ScrollArea className="h-full"> 
-        <SidebarHeader className="p-4 flex items-center justify-between"> {/* Added flex and justify-between */}
-          <h2 className="text-lg font-semibold">الأقسام</h2>
-          {isMobile && ( // Close button for mobile sheet
+        <SidebarHeader className="p-4 flex items-center justify-between">
+          {isMobile ? (
+            <SheetTitle className="text-lg font-semibold">الأقسام</SheetTitle>
+          ) : (
+            <div className="text-lg font-semibold">الأقسام</div>
+          )}
+          {isMobile && ( 
              <Button variant="ghost" size="icon" onClick={() => setOpenMobile(false)} className="ms-auto">
                 <X className="h-5 w-5" />
              </Button>
@@ -53,8 +57,6 @@ export default function CategorySidebar() {
 
   if (isMobile) {
     return (
-        // The Sheet (Sidebar for mobile) is now triggered from Header.tsx
-        // No trigger button is needed here.
         <Sidebar side="right" collapsible="offcanvas" variant="sidebar" className="w-72 md:w-64">
             {categoriesContent}
         </Sidebar>
@@ -62,9 +64,9 @@ export default function CategorySidebar() {
   }
 
   return (
-    // Desktop sidebar
-    <Sidebar side="right" collapsible="icon" variant="sidebar" className="hidden md:flex md:w-64 h-screen flex-col"> {/* Added h-screen and flex-col */}
+    <Sidebar side="right" collapsible="icon" variant="sidebar" className="hidden md:flex md:w-64 h-screen flex-col">
        {categoriesContent}
     </Sidebar>
   );
 }
+

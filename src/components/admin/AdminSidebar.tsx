@@ -11,7 +11,6 @@ import {
   MessageSquare,
   Settings,
   LogOut,
-  PanelLeftOpen,
   X
 } from 'lucide-react';
 import {
@@ -28,6 +27,7 @@ import { Button } from '@/components/ui/button';
 import { SITE_NAME } from '@/lib/constants';
 import { useAuth } from '@/hooks/useAuth';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { SheetTitle } from '@/components/ui/sheet'; // Import SheetTitle
 
 const adminNavItems = [
   { href: '/admin/dashboard', label: 'لوحة التحكم الرئيسية', icon: LayoutDashboard },
@@ -41,14 +41,22 @@ const adminNavItems = [
 export default function AdminSidebar() {
   const pathname = usePathname();
   const { logout } = useAuth();
-  const { isMobile, openMobile, setOpenMobile, toggleSidebar } = useSidebar();
+  const { isMobile, openMobile, setOpenMobile } = useSidebar(); // Removed toggleSidebar as it's not used directly here for open/close
 
   const sidebarContent = (
     <>
       <SidebarHeader className="p-4 flex items-center justify-between">
-        <Link href="/admin/dashboard" className="font-bold text-lg">
-          {SITE_NAME} - لوحة التحكم
-        </Link>
+        {isMobile ? (
+          <SheetTitle asChild>
+            <Link href="/admin/dashboard" className="font-bold text-lg">
+              {SITE_NAME} - لوحة التحكم
+            </Link>
+          </SheetTitle>
+        ) : (
+          <Link href="/admin/dashboard" className="font-bold text-lg">
+            {SITE_NAME} - لوحة التحكم
+          </Link>
+        )}
         {isMobile && (
             <Button variant="ghost" size="icon" onClick={() => setOpenMobile(false)}>
                 <X className="h-5 w-5" />
@@ -95,7 +103,6 @@ export default function AdminSidebar() {
   if (isMobile) {
     return (
         <>
-            {/* Mobile trigger button could be in AdminHeader or here if AdminHeader is not used */}
             <Sidebar side="right" collapsible="offcanvas" variant="sidebar" className="w-72">
                 {sidebarContent}
             </Sidebar>
@@ -109,3 +116,4 @@ export default function AdminSidebar() {
     </Sidebar>
   );
 }
+
