@@ -1,14 +1,16 @@
-
+// src/components/layout/Footer.tsx
+// This is a Server Component.
 import Link from 'next/link';
-import { Facebook, Instagram, MessageCircle, Phone, Mail } from 'lucide-react'; 
-import { getSiteSettings } from '@/app/admin/settings/actions'; 
+import { Facebook, Instagram, MessageCircle, Phone, Mail } from 'lucide-react';
+import { MOCK_SITE_SETTINGS } from '@/data/site-settings'; // Import directly
 
-export default async function Footer() {
+// Footer is now a synchronous Server Component
+export default function Footer() {
   const currentYear = new Date().getFullYear();
-  const settings = await getSiteSettings();
+  const settings = MOCK_SITE_SETTINGS; // Use directly
 
-  const whatsappLink = settings.whatsappNumber 
-    ? `https://wa.me/${settings.whatsappNumber.replace(/\+/g, '').replace(/\s/g, '')}` 
+  const whatsappLink = settings.whatsappNumber
+    ? `https://wa.me/${settings.whatsappNumber.replace(/\+/g, '').replace(/\s/g, '')}`
     : '#';
 
   return (
