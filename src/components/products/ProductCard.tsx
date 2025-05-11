@@ -25,7 +25,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               src={firstImage}
               alt={product.name}
               fill
-              sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, 20vw"
+              sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 33vw"
               className="object-cover group-hover:scale-105 transition-transform duration-300"
               data-ai-hint="mobile accessory"
             />

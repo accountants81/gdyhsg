@@ -1,10 +1,10 @@
 
 import MainLayout from '@/components/layout/MainLayout';
 import ProductGrid from '@/components/products/ProductGrid';
-import OffersSection from '@/components/offers/OffersSection'; // Import OffersSection
+// import OffersSection from '@/components/offers/OffersSection'; // Removed
 import { MOCK_PRODUCTS } from '@/data/products'; 
-import { MOCK_OFFERS } from '@/lib/constants'; // Import MOCK_OFFERS
-import type { Product, Offer } from '@/lib/types';
+// import { MOCK_OFFERS } from '@/lib/constants'; // Removed
+import type { Product } from '@/lib/types'; // Offer type removed
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
@@ -14,14 +14,14 @@ async function getProducts(): Promise<Product[]> {
   return Promise.resolve(MOCK_PRODUCTS);
 }
 
-// Simulate fetching offers
-async function getOffers(): Promise<Offer[]> {
-  return Promise.resolve(MOCK_OFFERS);
-}
+// Simulate fetching offers - Removed
+// async function getOffers(): Promise<Offer[]> {
+//   return Promise.resolve(MOCK_OFFERS);
+// }
 
 export default async function HomePage() {
   const products = await getProducts();
-  const offers = await getOffers();
+  // const offers = await getOffers(); // Removed
 
   return (
     <MainLayout>
@@ -36,11 +36,12 @@ export default async function HomePage() {
           </Button>
         </section>
         
-        <OffersSection offers={offers} />
+        {/* <OffersSection offers={offers} /> */} {/* Removed */}
 
-        <ProductGrid products={products} title="أحدث المنتجات" />
+        <ProductGrid products={products} title="أحدث المنتجات لدينا" />
 
       </div>
     </MainLayout>
   );
 }
+

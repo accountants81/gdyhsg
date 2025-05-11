@@ -1,7 +1,7 @@
 
 "use client";
 import Link from 'next/link';
-import { ShoppingCart, User, LogIn, HomeIcon, Settings, LayoutDashboard, LayoutGrid, LogOut } from 'lucide-react';
+import { ShoppingCart, User, LogIn, HomeIcon, Settings, LayoutDashboard, LayoutGrid, LogOut, Tag } from 'lucide-react'; // Added Tag icon
 import { Button } from '@/components/ui/button';
 import { SITE_NAME } from '@/lib/constants';
 import { useAuth } from '@/hooks/useAuth';
@@ -40,6 +40,18 @@ export default function Header() {
           <Link href="/" legacyBehavior passHref>
             <Button variant="ghost" size="sm" className="hidden sm:inline-flex text-sm">
               <HomeIcon className="h-4 w-4 me-1" /> الرئيسية
+            </Button>
+          </Link>
+
+          {/* Offers Button */}
+          <Link href="/offers" legacyBehavior passHref>
+            <Button variant="ghost" size="icon" className="sm:hidden text-sm" aria-label="العروض">
+              <Tag className="h-5 w-5" />
+            </Button>
+          </Link>
+          <Link href="/offers" legacyBehavior passHref>
+            <Button variant="ghost" size="sm" className="hidden sm:inline-flex text-sm">
+              <Tag className="h-4 w-4 me-1" /> العروض
             </Button>
           </Link>
           
@@ -117,4 +129,3 @@ export default function Header() {
     </header>
   );
 }
-
