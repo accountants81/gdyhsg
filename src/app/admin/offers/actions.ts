@@ -3,7 +3,8 @@
 
 import { revalidatePath } from 'next/cache';
 import type { Offer } from '@/lib/types';
-import { MOCK_OFFERS } from '@/data/products'; // Assuming MOCK_OFFERS is in products.ts or move to constants.ts
+import { MOCK_OFFERS } from '@/lib/constants'; // Updated import path
+
 // For a real app, MOCK_OFFERS would be in its own file or fetched from constants
 // For this example, let's define it here if not already available globally
 const temp_MOCK_OFFERS: Offer[] = MOCK_OFFERS.length > 0 ? MOCK_OFFERS : [
@@ -137,3 +138,4 @@ export async function deleteOfferAction(offerId: string): Promise<{ success: boo
 export async function getAllOffers(): Promise<Offer[]> {
     return Promise.resolve([...offersStore]);
 }
+
