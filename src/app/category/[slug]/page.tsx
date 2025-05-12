@@ -33,7 +33,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
   return (
     <MainLayout>
-      <div className="w-full max-w-screen-xl mx-auto px-4"> {/* Changed max-w-screen-2xl to max-w-screen-xl */}
+      <div className="w-full max-w-screen-xl mx-auto px-4">
         <ProductGrid products={products} title={`منتجات قسم: ${categoryName}`} />
         {products.length === 0 && (
           <div className="text-center py-10">

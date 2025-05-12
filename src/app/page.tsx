@@ -1,12 +1,11 @@
 
 import MainLayout from '@/components/layout/MainLayout';
 import ProductGrid from '@/components/products/ProductGrid';
-// import OffersSection from '@/components/offers/OffersSection'; // Removed
 import { MOCK_PRODUCTS } from '@/data/products'; 
-// import { MOCK_OFFERS } from '@/lib/constants'; // Removed
-import type { Product } from '@/lib/types'; // Offer type removed
+import type { Product } from '@/lib/types'; 
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import Image from 'next/image'; // Added for hero image
 
 // Simulate fetching products (replace with actual data fetching later)
 async function getProducts(): Promise<Product[]> {
@@ -14,34 +13,38 @@ async function getProducts(): Promise<Product[]> {
   return Promise.resolve(MOCK_PRODUCTS);
 }
 
-// Simulate fetching offers - Removed
-// async function getOffers(): Promise<Offer[]> {
-//   return Promise.resolve(MOCK_OFFERS);
-// }
-
 export default async function HomePage() {
   const products = await getProducts();
-  // const offers = await getOffers(); // Removed
 
   return (
     <MainLayout>
-      <div className="w-full max-w-screen-xl mx-auto px-4"> {/* Changed max-w-screen-2xl to max-w-screen-xl */}
-        <section className="text-center py-12 bg-card rounded-lg shadow-md my-8">
-          <h1 className="text-4xl font-bold mb-4 text-primary">مرحباً بك في AAAMO</h1>
-          <p className="text-lg text-muted-foreground mb-6">
-            اكتشف مجموعتنا الواسعة من إكسسوارات الموبايل عالية الجودة بأفضل الأسعار.
-          </p>
-          <Button size="lg" asChild>
-            <Link href="/products">تسوق الآن</Link>
-          </Button>
+      <div className="w-full max-w-screen-xl mx-auto px-4">
+        {/* Enhanced Hero Section */}
+        <section className="relative bg-card text-foreground p-8 md:p-12 rounded-lg shadow-xl my-8 overflow-hidden min-h-[300px] md:min-h-[400px] flex flex-col justify-center items-center text-center">
+          <Image
+            src="https://picsum.photos/seed/hero-banner/1200/500"
+            alt="Promotional Banner"
+            fill
+            className="object-cover opacity-20"
+            priority
+            data-ai-hint="abstract tech"
+          />
+          <div className="relative z-10">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 text-primary animate-fade-in-down">
+              مرحباً بك في {process.env.SITE_NAME || "AAAMO"}
+            </h1>
+            <p className="text-lg md:text-xl text-foreground/80 mb-8 animate-fade-in-up max-w-2xl mx-auto">
+              اكتشف مجموعتنا الواسعة من إكسسوارات الموبايل عالية الجودة بأفضل الأسعار. كل ما تحتاجه لجهازك في مكان واحد!
+            </p>
+            <Button size="lg" asChild className="animate-bounce-once">
+              <Link href="/products">تسوق الآن واستكشف العروض</Link>
+            </Button>
+          </div>
         </section>
         
-        {/* <OffersSection offers={offers} /> */} {/* Removed */}
-
         <ProductGrid products={products} title="أحدث المنتجات لدينا" />
 
       </div>
     </MainLayout>
   );
 }
-
