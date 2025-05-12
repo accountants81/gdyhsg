@@ -11,10 +11,11 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { CATEGORIES } from '@/lib/constants';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import Link from 'next/link';
-import { ArrowRight, Loader2, Save, PlusCircle } from 'lucide-react';
+import { ArrowRight, Loader2, Save, PlusCircle, ImageOff } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import React, { useEffect, useState } from 'react';
 import type { Product } from '@/lib/types';
+import Image from 'next/image';
 
 const initialState = {
   success: false,
@@ -43,9 +44,9 @@ export default function EditProductPage({ params }: EditProductPageProps) {
   const [product, setProduct] = useState<Product | null>(null);
   const [isLoadingProduct, setIsLoadingProduct] = useState(true);
   
-  // State for image URLs
-  const [mainImageUrl, setMainImageUrl] = useState('');
-  const [otherImageUrls, setOtherImageUrls] = useState<string[]>([]);
+  // Preview URLs for client-side display of newly selected files
+  const [mainImagePreview, setMainImagePreview] = useState<string | null>(null);
+  const [otherImagePreviews, setOtherImagePreviews] = useState<(string | null)[]>(Array(4).fill(null));
 
 
   useEffect(() => {
@@ -54,11 +55,6 @@ export default function EditProductPage({ params }: EditProductPageProps) {
       const fetchedProduct = await getProductById(productId);
       if (fetchedProduct) {
         setProduct(fetchedProduct);
-        setMainImageUrl(fetchedProduct.imageUrls[0] || '');
-        // Ensure otherImageUrls has at least one empty string for the input field if no other images exist, up to 4.
-        const existingOtherUrls = fetchedProduct.imageUrls.slice(1, 5);
-        setOtherImageUrls(existingOtherUrls.length > 0 ? existingOtherUrls : ['']);
-
       } else {
         toast({ title: 'خطأ', description: 'لم يتم العثور على المنتج.', variant: 'destructive' });
       }
@@ -71,43 +67,33 @@ export default function EditProductPage({ params }: EditProductPageProps) {
     if (state.message) {
       if (state.success && state.product) {
         toast({ title: 'نجاح', description: state.message });
-        setProduct(state.product); // Update local product state with returned data
-        setMainImageUrl(state.product.imageUrls[0] || '');
-        const existingOtherUrls = state.product.imageUrls.slice(1, 5);
-        setOtherImageUrls(existingOtherUrls.length > 0 ? existingOtherUrls : ['']);
-
+        setProduct(state.product); 
+        setMainImagePreview(null); // Clear previews after successful update
+        setOtherImagePreviews(Array(4).fill(null));
       } else if (!state.success) {
         toast({ title: 'خطأ', description: state.message, variant: 'destructive' });
       }
     }
   }, [state, toast]);
 
-  const handleAddImageUrlField = () => {
-    if (otherImageUrls.length < 4) { // Main image (handled by mainImageUrl) + 4 others
-      setOtherImageUrls([...otherImageUrls, '']);
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, setImagePreview: React.Dispatch<React.SetStateAction<string | null>>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImagePreview(URL.createObjectURL(file));
+    } else {
+      setImagePreview(null);
     }
   };
-
-  const handleOtherImageUrlChange = (index: number, value: string) => {
-    const newUrls = [...otherImageUrls];
-    newUrls[index] = value;
-    setOtherImageUrls(newUrls);
-  };
-
-  const handleRemoveImageUrlField = (index: number) => {
-     if (otherImageUrls.length > 1) {
-      const newUrls = otherImageUrls.filter((_, i) => i !== index);
-      setOtherImageUrls(newUrls);
-    } else if (otherImageUrls.length === 1) {
-       setOtherImageUrls(['']); // Reset the last field instead of removing it
+  
+  const handleOtherFileChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    const newPreviews = [...otherImagePreviews];
+    if (file) {
+      newPreviews[index] = URL.createObjectURL(file);
+    } else {
+      newPreviews[index] = null;
     }
-  };
-
-  const prepareFormData = (formData: FormData) => {
-    formData.set('mainImageUrl', mainImageUrl.trim());
-    const cleanedOtherUrls = otherImageUrls.map(url => url.trim()).filter(url => url);
-    formData.set('otherImageUrls', cleanedOtherUrls.join(','));
-    return formData;
+    setOtherImagePreviews(newPreviews);
   };
 
 
@@ -144,10 +130,10 @@ export default function EditProductPage({ params }: EditProductPageProps) {
         </Button>
       </div>
       <Card>
-        <form action={(formData) => formAction(prepareFormData(formData))}>
+        <form action={formAction} encType="multipart/form-data">
           <CardHeader>
             <CardTitle>تفاصيل المنتج</CardTitle>
-            <CardDescription>قم بتحديث معلومات المنتج.</CardDescription>
+            <CardDescription>قم بتحديث معلومات المنتج. يمكنك رفع صور جديدة لاستبدال الحالية.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
@@ -185,40 +171,46 @@ export default function EditProductPage({ params }: EditProductPageProps) {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="mainImageUrl">رابط الصورة الرئيسية للمنتج</Label>
+              <Label htmlFor="mainImageFile">الصورة الرئيسية للمنتج</Label>
+              { (mainImagePreview || product.imageUrls[0]) && (
+                <Image src={mainImagePreview || product.imageUrls[0]!} alt="الصورة الرئيسية الحالية" width={100} height={100} className="rounded-md object-cover my-2" data-ai-hint="current product image" />
+              )}
               <Input 
-                id="mainImageUrl" 
-                name="mainImageUrl" 
-                type="url" 
-                value={mainImageUrl}
-                onChange={(e) => setMainImageUrl(e.target.value)}
-                placeholder="https://example.com/main-image.jpg" 
+                id="mainImageFile" 
+                name="mainImageFile" 
+                type="file"
+                accept="image/*"
+                onChange={(e) => handleFileChange(e, setMainImagePreview)}
               />
+              <p className="text-xs text-muted-foreground">اترك الحقل فارغًا للاحتفاظ بالصورة الحالية.</p>
             </div>
 
             <div className="space-y-2">
-              <Label>روابط صور إضافية (حتى 4 صور)</Label>
-              {otherImageUrls.map((url, index) => (
-                <div key={index} className="flex items-center gap-2">
-                  <Input
-                    type="url"
-                    value={url}
-                    onChange={(e) => handleOtherImageUrlChange(index, e.target.value)}
-                    placeholder={`رابط الصورة الإضافية ${index + 1}`}
-                  />
-                   {otherImageUrls.length > 0 && (
-                     <Button type="button" variant="ghost" size="icon" onClick={() => handleRemoveImageUrlField(index)} aria-label="إزالة حقل الصورة">
-                        <PlusCircle className="h-4 w-4 rotate-45 text-destructive" />
-                    </Button>
-                  )}
-                </div>
-              ))}
-              {otherImageUrls.length < 4 && (
-                <Button type="button" variant="outline" size="sm" onClick={handleAddImageUrlField} className="mt-2">
-                  <PlusCircle className="mr-2 h-4 w-4" /> إضافة رابط صورة أخرى
-                </Button>
-              )}
-               <p className="text-xs text-muted-foreground">اترك الحقول فارغة للاحتفاظ بالصور الحالية، أو قم بتعديلها. لحذف كل الصور، اترك كل الحقول فارغة.</p>
+              <Label>صور إضافية (حتى 4 صور)</Label>
+              {Array.from({ length: 4 }).map((_, index) => {
+                const existingImageUrl = product.imageUrls[index + 1];
+                const previewUrl = otherImagePreviews[index];
+                return (
+                  <div key={index} className="space-y-1 border-t pt-2 mt-2">
+                     <Label htmlFor={`otherImageFile${index}`}>صورة إضافية {index + 1}</Label>
+                    {(previewUrl || existingImageUrl) ? (
+                       <Image src={previewUrl || existingImageUrl!} alt={`الصورة الإضافية ${index + 1} الحالية`} width={80} height={80} className="rounded-md object-cover my-1" data-ai-hint="additional product image" />
+                    ) : (
+                      <div className="w-20 h-20 bg-muted rounded-md flex items-center justify-center my-1">
+                        <ImageOff className="h-8 w-8 text-muted-foreground" />
+                      </div>
+                    )}
+                    <Input
+                      id={`otherImageFile${index}`}
+                      name={`otherImageFile${index}`}
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handleOtherFileChange(index, e)}
+                    />
+                  </div>
+                );
+              })}
+               <p className="text-xs text-muted-foreground">اترك الحقول فارغة للاحتفاظ بالصور الحالية أو لإزالة صورة إذا لم تكن موجودة.</p>
             </div>
 
           </CardContent>

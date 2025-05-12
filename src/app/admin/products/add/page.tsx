@@ -33,46 +33,35 @@ function SubmitButton() {
 export default function AddProductPage() {
   const [state, formAction] = useActionState(addProductAction, initialState);
   const { toast } = useToast();
-  const [otherImageUrls, setOtherImageUrls] = useState<string[]>(['']); // Start with one empty input for other images
+  const [otherImageCount, setOtherImageCount] = useState<number>(0); // Number of additional file inputs to show
 
   useEffect(() => {
     if (state.message) {
       if (state.success) {
         toast({ title: 'نجاح', description: state.message });
         // Optionally reset form or redirect here
+        setOtherImageCount(0); // Reset additional image fields
+        // Consider formRef.current.reset() if you add a ref to the form
       } else {
         toast({ title: 'خطأ', description: state.message, variant: 'destructive' });
       }
     }
   }, [state, toast]);
 
-  const handleAddImageUrlField = () => {
-    if (otherImageUrls.length < 4) { // Main image + 4 others = 5 total
-      setOtherImageUrls([...otherImageUrls, '']);
+  const handleAddImageField = () => {
+    if (otherImageCount < 4) { // Max 4 other images
+      setOtherImageCount(prev => prev + 1);
     }
   };
 
-  const handleOtherImageUrlChange = (index: number, value: string) => {
-    const newUrls = [...otherImageUrls];
-    newUrls[index] = value;
-    setOtherImageUrls(newUrls);
-  };
-
-  const handleRemoveImageUrlField = (index: number) => {
-    if (otherImageUrls.length > 1) {
-      const newUrls = otherImageUrls.filter((_, i) => i !== index);
-      setOtherImageUrls(newUrls);
-    } else if (otherImageUrls.length === 1) {
-       setOtherImageUrls(['']); // Reset the last field instead of removing it
+  const handleRemoveImageField = (index: number) => {
+    // This logic is tricky if inputs are not individually controlled
+    // For now, just reduce the count, which removes the last added input
+    if (otherImageCount > 0) {
+       setOtherImageCount(prev => prev -1);
     }
   };
   
-  const prepareFormData = (formData: FormData) => {
-    const otherUrls = otherImageUrls.map(url => url.trim()).filter(url => url);
-    formData.set('otherImageUrls', otherUrls.join(','));
-    return formData;
-  }
-
   return (
     <div className="space-y-6 max-w-3xl mx-auto">
       <div className="flex items-center justify-between">
@@ -84,10 +73,10 @@ export default function AddProductPage() {
         </Button>
       </div>
       <Card>
-        <form action={(formData) => formAction(prepareFormData(formData))}>
+        <form action={formAction} encType="multipart/form-data">
           <CardHeader>
             <CardTitle>تفاصيل المنتج</CardTitle>
-            <CardDescription>قم بإدخال معلومات المنتج الجديد.</CardDescription>
+            <CardDescription>قم بإدخال معلومات المنتج الجديد. يمكنك إضافة صورة رئيسية و حتى 4 صور إضافية.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
@@ -125,33 +114,31 @@ export default function AddProductPage() {
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="mainImageUrl">رابط الصورة الرئيسية للمنتج</Label>
-              <Input id="mainImageUrl" name="mainImageUrl" type="url" placeholder="https://example.com/main-image.jpg" />
+              <Label htmlFor="mainImageFile">الصورة الرئيسية للمنتج</Label>
+              <Input id="mainImageFile" name="mainImageFile" type="file" accept="image/*" />
             </div>
 
             <div className="space-y-2">
-              <Label>روابط صور إضافية (حتى 4 صور)</Label>
-              {otherImageUrls.map((url, index) => (
+              <Label>صور إضافية (حتى 4 صور)</Label>
+              {Array.from({ length: otherImageCount }).map((_, index) => (
                 <div key={index} className="flex items-center gap-2">
                   <Input
-                    type="url"
-                    value={url}
-                    onChange={(e) => handleOtherImageUrlChange(index, e.target.value)}
-                    placeholder={`رابط الصورة الإضافية ${index + 1}`}
+                    type="file"
+                    name={`otherImageFile${index}`}
+                    accept="image/*"
                   />
-                  {otherImageUrls.length > 0 && ( // Show remove button if there's at least one field or if it's not the only field and empty
-                     <Button type="button" variant="ghost" size="icon" onClick={() => handleRemoveImageUrlField(index)} aria-label="إزالة حقل الصورة">
+                  {/* Simple remove: removes the last added field. More complex removal would require managing an array of file states. */}
+                   <Button type="button" variant="ghost" size="icon" onClick={() => handleRemoveImageField(index)} aria-label="إزالة حقل الصورة">
                         <PlusCircle className="h-4 w-4 rotate-45 text-destructive" />
                     </Button>
-                  )}
                 </div>
               ))}
-              {otherImageUrls.length < 4 && (
-                <Button type="button" variant="outline" size="sm" onClick={handleAddImageUrlField} className="mt-2">
-                  <PlusCircle className="mr-2 h-4 w-4" /> إضافة رابط صورة أخرى
+              {otherImageCount < 4 && (
+                <Button type="button" variant="outline" size="sm" onClick={handleAddImageField} className="mt-2">
+                  <PlusCircle className="mr-2 h-4 w-4" /> إضافة صورة أخرى
                 </Button>
               )}
-               <p className="text-xs text-muted-foreground">يمكنك لصق روابط الصور من مواقع مثل Imgur أو Google Photos (تأكد أن الرابط مباشر للصورة وينتهي بـ .jpg, .png, إلخ).</p>
+               <p className="text-xs text-muted-foreground">اختر الصور من جهازك. سيتم استخدام صور افتراضية إذا لم يتم رفع صور.</p>
             </div>
 
           </CardContent>

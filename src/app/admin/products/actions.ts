@@ -9,11 +9,13 @@ import { MOCK_PRODUCTS } from '@/data/products'; // Import mock products
 // This allows actions to modify the list in memory for demo purposes.
 let productsStore: Product[] = MOCK_PRODUCTS.map(p => ({...p, imageUrls: [...p.imageUrls]}));
 
+const generatePlaceholderUrl = (baseName: string = "uploaded_image"): string => {
+  return `https://picsum.photos/seed/${baseName}_${Date.now()}_${Math.random().toString(16).slice(2)}/400/400`;
+};
+
 export async function getProductById(productId: string): Promise<Product | undefined> {
   const product = productsStore.find(p => p.id === productId);
   if (product) {
-    // Return a deep copy to prevent accidental mutation of the store if needed elsewhere
-    // and to ensure consistent data structure, especially for imageUrls.
     return JSON.parse(JSON.stringify(product));
   }
   return undefined;
@@ -21,39 +23,40 @@ export async function getProductById(productId: string): Promise<Product | undef
 
 export async function addProductAction(formData: FormData): Promise<{ success: boolean; message: string; product?: Product }> {
   try {
-    const mainImageUrl = formData.get('mainImageUrl') as string;
-    const otherImageUrlsString = formData.get('otherImageUrls') as string;
-    
-    let imageUrls: string[] = [];
-    if (mainImageUrl && mainImageUrl.trim()) {
-      imageUrls.push(mainImageUrl.trim());
-    }
-    if (otherImageUrlsString) {
-      imageUrls.push(...otherImageUrlsString.split(',').map(url => url.trim()).filter(url => url));
-    }
-    if (imageUrls.length === 0) {
-        imageUrls.push('https://picsum.photos/seed/new_product/400/400'); // Default placeholder
-    }
-    
-    // Limit to 5 images
-    imageUrls = imageUrls.slice(0, 5);
+    const imageUrls: string[] = [];
 
+    const mainImageFile = formData.get('mainImageFile') as File | null;
+    if (mainImageFile && mainImageFile.size > 0) {
+      imageUrls.push(generatePlaceholderUrl('main'));
+    }
+
+    for (let i = 0; i < 4; i++) {
+      const otherImageFile = formData.get(`otherImageFile${i}`) as File | null;
+      if (otherImageFile && otherImageFile.size > 0) {
+        imageUrls.push(generatePlaceholderUrl(`other_${i}`));
+      }
+    }
+    
+    if (imageUrls.length === 0) {
+        imageUrls.push(generatePlaceholderUrl('default_product')); 
+    }
+    
+    // Limit to 5 images total
+    const finalImageUrls = imageUrls.slice(0, 5);
 
     const newProduct: Product = {
-      id: `prod_${Date.now()}`, // Simple ID generation
+      id: `prod_${Date.now()}`, 
       name: formData.get('name') as string,
       description: formData.get('description') as string,
       price: parseFloat(formData.get('price') as string),
-      imageUrls: imageUrls,
+      imageUrls: finalImageUrls,
       categorySlug: formData.get('categorySlug') as string,
       stock: parseInt(formData.get('stock') as string, 10),
     };
 
-    // Basic validation (can be expanded with Zod)
     if (!newProduct.name || !newProduct.price || !newProduct.categorySlug || isNaN(newProduct.stock)) {
         return { success: false, message: "بيانات المنتج غير كاملة أو غير صالحة." };
     }
-
 
     productsStore.push(newProduct);
     console.log("Product added:", newProduct);
@@ -61,7 +64,6 @@ export async function addProductAction(formData: FormData): Promise<{ success: b
     revalidatePath('/admin/products'); 
     revalidatePath('/'); 
     revalidatePath(`/category/${newProduct.categorySlug}`);
-    // No need to revalidate product detail page for a new product
 
     return { success: true, message: "تمت إضافة المنتج بنجاح!", product: JSON.parse(JSON.stringify(newProduct)) };
   } catch (error) {
@@ -77,34 +79,41 @@ export async function updateProductAction(productId: string, formData: FormData)
     if (productIndex === -1) {
       return { success: false, message: "المنتج غير موجود." };
     }
+    const existingProduct = productsStore[productIndex];
+    const newImageUrls: string[] = [];
 
-    const mainImageUrl = formData.get('mainImageUrl') as string;
-    const otherImageUrlsString = formData.get('otherImageUrls') as string;
-
-    let imageUrls: string[] = [];
-    if (mainImageUrl && mainImageUrl.trim()) {
-      imageUrls.push(mainImageUrl.trim());
+    // Main image
+    const mainImageFile = formData.get('mainImageFile') as File | null;
+    if (mainImageFile && mainImageFile.size > 0) {
+      newImageUrls.push(generatePlaceholderUrl('main_updated'));
+    } else if (existingProduct.imageUrls[0]) {
+      newImageUrls.push(existingProduct.imageUrls[0]);
     }
-    if (otherImageUrlsString) {
-      imageUrls.push(...otherImageUrlsString.split(',').map(url => url.trim()).filter(url => url));
+
+    // Other images (up to 4)
+    for (let i = 0; i < 4; i++) {
+      if (newImageUrls.length >= 5) break; // Max 5 images total
+      const otherImageFile = formData.get(`otherImageFile${i}`) as File | null;
+      const existingOtherImageIndex = i + 1; // existingProduct.imageUrls[0] is main, [1] is other0, etc.
+
+      if (otherImageFile && otherImageFile.size > 0) {
+        newImageUrls.push(generatePlaceholderUrl(`other_updated_${i}`));
+      } else if (existingProduct.imageUrls[existingOtherImageIndex]) {
+        newImageUrls.push(existingProduct.imageUrls[existingOtherImageIndex]);
+      }
     }
     
-    // If no new URLs provided via form fields (mainImageUrl and otherImageUrlsString are empty/whitespace), keep existing ones.
-    if (imageUrls.length === 0 && productsStore[productIndex].imageUrls.length > 0 && !(mainImageUrl && mainImageUrl.trim()) && !otherImageUrlsString) {
-      imageUrls = [...productsStore[productIndex].imageUrls];
-    } else if (imageUrls.length === 0) {
-      // New image URLs are empty or not provided, and old ones might be empty or user cleared them. Use placeholder.
-      imageUrls.push('https://picsum.photos/seed/updated_product/400/400');
+    if (newImageUrls.length === 0) {
+      newImageUrls.push(generatePlaceholderUrl('default_updated_product'));
     }
 
-    // Limit to 5 images
-    imageUrls = imageUrls.slice(0, 5);
+    const finalImageUrls = newImageUrls.slice(0, 5);
 
     const updatedProductData = {
       name: formData.get('name') as string,
       description: formData.get('description') as string,
       price: parseFloat(formData.get('price') as string),
-      imageUrls: imageUrls,
+      imageUrls: finalImageUrls,
       categorySlug: formData.get('categorySlug') as string,
       stock: parseInt(formData.get('stock') as string, 10),
     };
@@ -113,7 +122,7 @@ export async function updateProductAction(productId: string, formData: FormData)
         return { success: false, message: "بيانات المنتج المحدثة غير كاملة أو غير صالحة." };
     }
 
-    productsStore[productIndex] = { ...productsStore[productIndex], ...updatedProductData };
+    productsStore[productIndex] = { ...existingProduct, ...updatedProductData };
     console.log("Product updated:", productsStore[productIndex]);
     
     revalidatePath(`/admin/products`);
@@ -121,10 +130,9 @@ export async function updateProductAction(productId: string, formData: FormData)
     revalidatePath(`/products/${productId}`); 
     revalidatePath('/');
     revalidatePath(`/category/${updatedProductData.categorySlug}`);
-    if (productsStore[productIndex].categorySlug !== updatedProductData.categorySlug) {
-        revalidatePath(`/category/${productsStore[productIndex].categorySlug}`); // Revalidate old category too
+    if (existingProduct.categorySlug !== updatedProductData.categorySlug) {
+        revalidatePath(`/category/${existingProduct.categorySlug}`); 
     }
-
 
     return { success: true, message: "تم تحديث المنتج بنجاح!", product: JSON.parse(JSON.stringify(productsStore[productIndex])) };
   } catch (error) {
@@ -150,9 +158,8 @@ export async function deleteProductAction(productId: string): Promise<{ success:
     
     revalidatePath('/admin/products');
     revalidatePath('/');
-    revalidatePath(`/products/${productId}`); // To show notFound page or similar
+    revalidatePath(`/products/${productId}`); 
     revalidatePath(`/category/${categorySlug}`);
-
 
     return { success: true, message: "تم حذف المنتج بنجاح." };
   } catch (error) {
@@ -162,12 +169,10 @@ export async function deleteProductAction(productId: string): Promise<{ success:
   }
 }
 
-// Helper to get all products for public display, ensuring they are read from the current state of productsStore
 export async function getAllProducts(): Promise<Product[]> {
   return Promise.resolve(productsStore.map(p => JSON.parse(JSON.stringify(p))));
 }
 
-// Helper to get products by category for public display
 export async function getProductsByCategory(categorySlug: string): Promise<Product[]> {
   return Promise.resolve(productsStore.filter(p => p.categorySlug === categorySlug).map(p => JSON.parse(JSON.stringify(p))));
 }
