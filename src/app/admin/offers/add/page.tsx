@@ -8,7 +8,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { CATEGORIES, MOCK_PRODUCTS } from '@/lib/constants'; // Assuming MOCK_PRODUCTS for product selection
+import { CATEGORIES } from '@/lib/constants';
+import { MOCK_PRODUCTS } from '@/data/products'; // Assuming MOCK_PRODUCTS for product selection
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import Link from 'next/link';
 import { ArrowRight, Loader2, PlusCircle } from 'lucide-react';
