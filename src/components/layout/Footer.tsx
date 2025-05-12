@@ -15,7 +15,7 @@ export default function Footer() {
     : '#';
 
   return (
-    <footer className="border-t border-border/40 bg-card/50 text-foreground/80">
+    <footer className="border-t border-border/40 bg-card text-foreground/80">
       <div className="container py-10 max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           

@@ -16,7 +16,7 @@ export default function Header() {
   const { toggleSidebar, isMobile } = useSidebar();
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 shadow-md">
+    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background shadow-md">
       <div className="container flex h-16 max-w-screen-xl items-center justify-between px-2 sm:px-4">
         <div className="flex items-center gap-1 sm:gap-2">
           {isMobile && (
