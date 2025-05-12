@@ -12,7 +12,7 @@ import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea'; // Added import for Textarea
+import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { EGYPTIAN_GOVERNORATES, PAYMENT_METHODS_AR, MIN_ORDER_VALUE } from '@/lib/constants';
 import { useToast } from '@/hooks/use-toast';
@@ -130,7 +130,7 @@ export default function CheckoutPage() {
                     <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="space-y-1.5">
                             <Label htmlFor="customerName">الاسم بالكامل <span className="text-destructive">*</span></Label>
-                            <Input id="customerName" name="customerName" defaultValue={user?.name || ''} required placeholder="مثال: محمد أحمد عبدالله" />
+                            <Input id="customerName" name="customerName" defaultValue={user?.name || ''} required placeholder="محمد أحمد عبدالله" />
                         </div>
                         <div className="space-y-1.5">
                             <Label htmlFor="customerEmail">البريد الإلكتروني</Label>
@@ -167,11 +167,11 @@ export default function CheckoutPage() {
                         </div>
                         <div className="space-y-1.5">
                             <Label htmlFor="customerAddress">العنوان بالتفصيل <span className="text-destructive">*</span></Label>
-                            <Textarea id="customerAddress" name="customerAddress" required placeholder="مثال: 123 شارع النصر، بجوار مسجد السلام، الدور الثالث، شقة 5" />
+                            <Textarea id="customerAddress" name="customerAddress" required placeholder="123 شارع النصر، بجوار مسجد السلام، الدور الثالث، شقة 5" />
                         </div>
                         <div className="space-y-1.5">
                             <Label htmlFor="customerLandmark">أقرب علامة مميزة (اختياري)</Label>
-                            <Input id="customerLandmark" name="customerLandmark" placeholder="مثال: أمام مدرسة المستقبل" />
+                            <Input id="customerLandmark" name="customerLandmark" placeholder="أمام مدرسة المستقبل" />
                         </div>
                     </CardContent>
                 </Card>
@@ -188,9 +188,21 @@ export default function CheckoutPage() {
                                     <SelectValue placeholder="اختر طريقة الدفع" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                {Object.entries(PAYMENT_METHODS_AR).map(([key, value]) => (
-                                    <SelectItem key={key} value={key}>{value}</SelectItem>
-                                ))}
+                                {Object.entries(PAYMENT_METHODS_AR).map(([key, value]) => {
+                                   const paymentKey = key as keyof typeof PAYMENT_METHODS_AR;
+                                   let descriptionText = '';
+                                   if (paymentKey === 'vodafone_cash' || paymentKey === 'fawry') {
+                                     descriptionText = '(سيتم التواصل معك لاتمام عمليه الدفع)';
+                                   } else if (paymentKey === 'cod') {
+                                     descriptionText = '(يجب دفع مبلغ عربون مقدم لتأكيد عملية الدفع)';
+                                   }
+                                   return (
+                                    <SelectItem key={key} value={key}>
+                                      {value}
+                                      {descriptionText && <span className="text-xs text-muted-foreground ms-1 rtl:mr-1">{descriptionText}</span>}
+                                    </SelectItem>
+                                  );
+                                })}
                                 </SelectContent>
                             </Select>
                         </div>
@@ -208,7 +220,7 @@ export default function CheckoutPage() {
                         {cartItems.map(item => (
                             <div key={item.id} className="flex justify-between items-start text-sm border-b pb-2 last:border-b-0">
                                 <div className="flex items-start gap-2">
-                                    <Image src={item.imageUrls[0] || 'https://picsum.photos/seed/checkoutitem/60/60'} alt={item.name} width={60} height={60} className="rounded-md object-cover aspect-square" data-ai-hint="product thumbnail" />
+                                    <Image src={item.imageUrls[0] || 'https://picsum.photos/seed/checkoutitem/60/60'} alt={item.name} width={60} height={60} className="rounded-md object-cover aspect-square" data-ai-hint="product thumbnail"/>
                                     <div>
                                         <p className="font-medium leading-tight">{item.name}</p>
                                         <p className="text-xs text-muted-foreground">الكمية: {item.quantity}</p>
@@ -244,3 +256,4 @@ export default function CheckoutPage() {
     </MainLayout>
   );
 }
+
