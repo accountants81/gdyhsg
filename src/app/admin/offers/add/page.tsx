@@ -1,7 +1,7 @@
 
 "use client";
 import { useFormStatus } from 'react-dom';
-import { useActionState } from 'react';
+import React, { useEffect, useActionState } from 'react'; // useActionState from React
 import { addOfferAction } from '../actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,18 +9,19 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { CATEGORIES } from '@/lib/constants';
-import { MOCK_PRODUCTS } from '@/data/products'; // Assuming MOCK_PRODUCTS for product selection
+import { MOCK_PRODUCTS } from '@/data/products'; 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import Link from 'next/link';
 import { ArrowRight, Loader2, PlusCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import React, { useEffect } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
 
 const initialState = {
   success: false,
   message: '',
 };
+
+const EMPTY_SELECT_VALUE = "NO_SELECTION"; // Consistent value for "no selection"
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -35,12 +36,13 @@ function SubmitButton() {
 export default function AddOfferPage() {
   const [state, formAction] = useActionState(addOfferAction, initialState);
   const { toast } = useToast();
+  const formRef = React.useRef<HTMLFormElement>(null);
 
   useEffect(() => {
     if (state.message) {
       if (state.success) {
         toast({ title: 'نجاح', description: state.message });
-        // Optionally reset form or redirect here
+        formRef.current?.reset(); 
       } else {
         toast({ title: 'خطأ', description: state.message, variant: 'destructive' });
       }
@@ -58,7 +60,7 @@ export default function AddOfferPage() {
         </Button>
       </div>
       <Card>
-        <form action={formAction}>
+        <form ref={formRef} action={formAction}>
           <CardHeader>
             <CardTitle>تفاصيل العرض</CardTitle>
             <CardDescription>قم بإدخال معلومات العرض الجديد.</CardDescription>
@@ -76,12 +78,12 @@ export default function AddOfferPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                     <Label htmlFor="productId">منتج مرتبط (اختياري)</Label>
-                    <Select name="productId">
+                    <Select name="productId" defaultValue={EMPTY_SELECT_VALUE}>
                         <SelectTrigger id="productId">
                         <SelectValue placeholder="اختر منتجًا" />
                         </SelectTrigger>
                         <SelectContent>
-                        <SelectItem value="">لا يوجد منتج محدد</SelectItem>
+                        <SelectItem value={EMPTY_SELECT_VALUE}>لا يوجد منتج محدد</SelectItem>
                         {MOCK_PRODUCTS.map(product => (
                             <SelectItem key={product.id} value={product.id}>
                             {product.name}
@@ -92,12 +94,12 @@ export default function AddOfferPage() {
                 </div>
                 <div className="space-y-2">
                     <Label htmlFor="categorySlug">فئة مرتبطة (اختياري)</Label>
-                    <Select name="categorySlug">
+                    <Select name="categorySlug" defaultValue={EMPTY_SELECT_VALUE}>
                         <SelectTrigger id="categorySlug">
                         <SelectValue placeholder="اختر فئة" />
                         </SelectTrigger>
                         <SelectContent>
-                        <SelectItem value="">لا توجد فئة محددة</SelectItem>
+                        <SelectItem value={EMPTY_SELECT_VALUE}>لا توجد فئة محددة</SelectItem>
                         {CATEGORIES.map(category => (
                             <SelectItem key={category.slug} value={category.slug}>
                             {category.name}

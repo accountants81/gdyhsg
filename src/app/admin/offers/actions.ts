@@ -3,26 +3,26 @@
 
 import { revalidatePath } from 'next/cache';
 import type { Offer } from '@/lib/types';
-import { MOCK_OFFERS } from '@/lib/constants'; // Updated import path
+import { MOCK_OFFERS } from '@/lib/constants'; 
 
 // For a real app, MOCK_OFFERS would be in its own file or fetched from constants
-// For this example, let's define it here if not already available globally
-const temp_MOCK_OFFERS: Offer[] = MOCK_OFFERS.length > 0 ? MOCK_OFFERS : [
-  { 
-    id: 'temp_offer_1', 
-    title: 'خصم مؤقت', 
-    discountPercentage: 10, 
-    startDate: new Date().toISOString(), 
-    endDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), 
-    isActive: true 
+
+let offersStore: Offer[] = [...MOCK_OFFERS.map(o => ({...o}))]; // Ensure deep copy for mutable store
+
+const EMPTY_SELECT_VALUE = "NO_SELECTION"; // Value for "no selection" option
+
+const getProcessedSelectValue = (valueFromForm: string | null): string | undefined => {
+  if (valueFromForm === EMPTY_SELECT_VALUE || valueFromForm === null || valueFromForm === "") {
+    return undefined;
   }
-];
+  return valueFromForm;
+};
 
-
-let offersStore: Offer[] = [...temp_MOCK_OFFERS.map(o => ({...o}))];
 
 export async function getOfferById(offerId: string): Promise<Offer | undefined> {
-  return offersStore.find(o => o.id === offerId);
+  const offer = offersStore.find(o => o.id === offerId);
+  // Return a deep copy to prevent direct mutation of the store from outside
+  return offer ? JSON.parse(JSON.stringify(offer)) : undefined;
 }
 
 export async function addOfferAction(formData: FormData): Promise<{ success: boolean; message: string; offer?: Offer }> {
@@ -30,9 +30,9 @@ export async function addOfferAction(formData: FormData): Promise<{ success: boo
     const newOffer: Offer = {
       id: `offer_${Date.now()}`,
       title: formData.get('title') as string,
-      description: formData.get('description') as string | undefined,
-      productId: formData.get('productId') as string || undefined,
-      categorySlug: formData.get('categorySlug') as string || undefined,
+      description: formData.get('description') as string || undefined,
+      productId: getProcessedSelectValue(formData.get('productId') as string | null),
+      categorySlug: getProcessedSelectValue(formData.get('categorySlug') as string | null),
       discountPercentage: formData.get('discountPercentage') ? parseFloat(formData.get('discountPercentage') as string) : undefined,
       startDate: formData.get('startDate') as string,
       endDate: formData.get('endDate') as string,
@@ -58,7 +58,7 @@ export async function addOfferAction(formData: FormData): Promise<{ success: boo
     revalidatePath('/admin/offers');
     revalidatePath('/'); // Revalidate homepage if offers are shown there
 
-    return { success: true, message: "تمت إضافة العرض بنجاح!", offer: newOffer };
+    return { success: true, message: "تمت إضافة العرض بنجاح!", offer: JSON.parse(JSON.stringify(newOffer)) };
   } catch (error) {
     console.error("Error adding offer:", error);
     const errorMessage = error instanceof Error ? error.message : "حدث خطأ غير معروف.";
@@ -76,8 +76,8 @@ export async function updateOfferAction(offerId: string, formData: FormData): Pr
     const updatedOfferData: Partial<Offer> = {
       title: formData.get('title') as string,
       description: formData.get('description') as string || undefined,
-      productId: formData.get('productId') as string || undefined,
-      categorySlug: formData.get('categorySlug') as string || undefined,
+      productId: getProcessedSelectValue(formData.get('productId') as string | null),
+      categorySlug: getProcessedSelectValue(formData.get('categorySlug') as string | null),
       discountPercentage: formData.get('discountPercentage') ? parseFloat(formData.get('discountPercentage') as string) : undefined,
       startDate: formData.get('startDate') as string,
       endDate: formData.get('endDate') as string,
@@ -104,7 +104,7 @@ export async function updateOfferAction(offerId: string, formData: FormData): Pr
     revalidatePath(`/admin/offers/edit/${offerId}`);
     revalidatePath('/');
 
-    return { success: true, message: "تم تحديث العرض بنجاح!", offer: offersStore[offerIndex] };
+    return { success: true, message: "تم تحديث العرض بنجاح!", offer: JSON.parse(JSON.stringify(offersStore[offerIndex])) };
   } catch (error) {
     console.error("Error updating offer:", error);
     const errorMessage = error instanceof Error ? error.message : "حدث خطأ غير معروف.";
@@ -136,6 +136,6 @@ export async function deleteOfferAction(offerId: string): Promise<{ success: boo
 
 // Helper function to get all offers (primarily for the admin list page)
 export async function getAllOffers(): Promise<Offer[]> {
-    return Promise.resolve([...offersStore]);
+    // Return a deep copy to prevent direct mutation of the store from outside
+    return Promise.resolve(offersStore.map(o => JSON.parse(JSON.stringify(o))));
 }
-

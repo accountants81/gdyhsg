@@ -1,7 +1,7 @@
 
 "use client";
 import { useFormStatus } from 'react-dom';
-import { useActionState } from 'react';
+import React, { useEffect, useState, useActionState } from 'react'; // useActionState from React
 import { updateOfferAction, getOfferById } from '../../actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -14,7 +14,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import Link from 'next/link';
 import { ArrowRight, Loader2, Save } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import React, { useEffect, useState } from 'react';
 import type { Offer } from '@/lib/types';
 import { Checkbox } from '@/components/ui/checkbox';
 import { format } from 'date-fns';
@@ -24,6 +23,8 @@ const initialState = {
   message: '',
   offer: undefined as Offer | undefined,
 };
+
+const EMPTY_SELECT_VALUE = "NO_SELECTION"; // Consistent value for "no selection"
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -64,7 +65,7 @@ export default function EditOfferPage({ params }: EditOfferPageProps) {
     if (state.message) {
       if (state.success && state.offer) {
         toast({ title: 'نجاح', description: state.message });
-        setOffer(state.offer); // Update local offer state with returned data
+        setOffer(state.offer); 
       } else if (!state.success) {
         toast({ title: 'خطأ', description: state.message, variant: 'destructive' });
       }
@@ -93,13 +94,12 @@ export default function EditOfferPage({ params }: EditOfferPageProps) {
     );
   }
   
-  // Helper to format date for input type="date"
   const formatDateForInput = (dateString?: string) => {
     if (!dateString) return '';
     try {
       return format(new Date(dateString), 'yyyy-MM-dd');
     } catch {
-      return ''; // Handle invalid date string
+      return ''; 
     }
   };
 
@@ -133,12 +133,12 @@ export default function EditOfferPage({ params }: EditOfferPageProps) {
              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                     <Label htmlFor="productId">منتج مرتبط (اختياري)</Label>
-                    <Select name="productId" defaultValue={offer.productId || ""}>
+                    <Select name="productId" defaultValue={offer.productId || EMPTY_SELECT_VALUE}>
                         <SelectTrigger id="productId">
                         <SelectValue placeholder="اختر منتجًا" />
                         </SelectTrigger>
                         <SelectContent>
-                        <SelectItem value="">لا يوجد منتج محدد</SelectItem>
+                        <SelectItem value={EMPTY_SELECT_VALUE}>لا يوجد منتج محدد</SelectItem>
                         {MOCK_PRODUCTS.map(product => (
                             <SelectItem key={product.id} value={product.id}>
                             {product.name}
@@ -149,12 +149,12 @@ export default function EditOfferPage({ params }: EditOfferPageProps) {
                 </div>
                 <div className="space-y-2">
                     <Label htmlFor="categorySlug">فئة مرتبطة (اختياري)</Label>
-                    <Select name="categorySlug" defaultValue={offer.categorySlug || ""}>
+                    <Select name="categorySlug" defaultValue={offer.categorySlug || EMPTY_SELECT_VALUE}>
                         <SelectTrigger id="categorySlug">
                         <SelectValue placeholder="اختر فئة" />
                         </SelectTrigger>
                         <SelectContent>
-                        <SelectItem value="">لا توجد فئة محددة</SelectItem>
+                        <SelectItem value={EMPTY_SELECT_VALUE}>لا توجد فئة محددة</SelectItem>
                         {CATEGORIES.map(category => (
                             <SelectItem key={category.slug} value={category.slug}>
                             {category.name}
@@ -167,7 +167,7 @@ export default function EditOfferPage({ params }: EditOfferPageProps) {
 
             <div className="space-y-2">
               <Label htmlFor="discountPercentage">نسبة الخصم (اختياري، 0-100)</Label>
-              <Input id="discountPercentage" name="discountPercentage" type="number" step="0.01" min="0" max="100" defaultValue={offer.discountPercentage || ''} />
+              <Input id="discountPercentage" name="discountPercentage" type="number" step="0.01" min="0" max="100" defaultValue={offer.discountPercentage?.toString() || ''} />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
