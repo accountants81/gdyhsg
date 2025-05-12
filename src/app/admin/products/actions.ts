@@ -4,14 +4,12 @@
 import { revalidatePath } from 'next/cache';
 import type { Product } from '@/lib/types';
 import { MOCK_PRODUCTS } from '@/data/products'; // Import mock products
+import { generatePlaceholderUrl } from '@/lib/utils'; // Import from utils
 
 // Initialize productsStore with a mutable copy of MOCK_PRODUCTS
 // This allows actions to modify the list in memory for demo purposes.
 let productsStore: Product[] = MOCK_PRODUCTS.map(p => ({...p, imageUrls: [...p.imageUrls]}));
 
-const generatePlaceholderUrl = (baseName: string = "uploaded_image"): string => {
-  return `https://picsum.photos/seed/${baseName}_${Date.now()}_${Math.random().toString(16).slice(2)}/400/400`;
-};
 
 export async function getProductById(productId: string): Promise<Product | undefined> {
   const product = productsStore.find(p => p.id === productId);

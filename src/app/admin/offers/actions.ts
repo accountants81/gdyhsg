@@ -4,6 +4,7 @@
 import { revalidatePath } from 'next/cache';
 import type { Offer } from '@/lib/types';
 import { MOCK_OFFERS } from '@/lib/constants'; 
+import { generatePlaceholderUrl } from '@/lib/utils';
 
 // For a real app, MOCK_OFFERS would be in its own file or fetched from constants
 
@@ -27,6 +28,16 @@ export async function getOfferById(offerId: string): Promise<Offer | undefined> 
 
 export async function addOfferAction(formData: FormData): Promise<{ success: boolean; message: string; offer?: Offer }> {
   try {
+    const imageUrlFromText = formData.get('imageUrl') as string | null;
+    const imageUrlFile = formData.get('imageUrlFile') as File | null;
+    let finalImageUrl: string | undefined = undefined;
+
+    if (imageUrlFile && imageUrlFile.size > 0) {
+      finalImageUrl = generatePlaceholderUrl('offer_banner', 800, 300); // Use specific dimensions for offer banners
+    } else if (imageUrlFromText) {
+      finalImageUrl = imageUrlFromText;
+    }
+
     const newOffer: Offer = {
       id: `offer_${Date.now()}`,
       title: formData.get('title') as string,
@@ -36,7 +47,7 @@ export async function addOfferAction(formData: FormData): Promise<{ success: boo
       discountPercentage: formData.get('discountPercentage') ? parseFloat(formData.get('discountPercentage') as string) : undefined,
       startDate: formData.get('startDate') as string,
       endDate: formData.get('endDate') as string,
-      imageUrl: formData.get('imageUrl') as string || undefined,
+      imageUrl: finalImageUrl,
       isActive: formData.get('isActive') === 'on',
       couponCode: formData.get('couponCode') as string || undefined,
     };
@@ -56,7 +67,11 @@ export async function addOfferAction(formData: FormData): Promise<{ success: boo
     console.log("Offer added:", newOffer);
 
     revalidatePath('/admin/offers');
-    revalidatePath('/'); // Revalidate homepage if offers are shown there
+    revalidatePath('/'); 
+    revalidatePath('/offers');
+    if (newOffer.productId) revalidatePath(`/products/${newOffer.productId}`);
+    if (newOffer.categorySlug) revalidatePath(`/category/${newOffer.categorySlug}`);
+
 
     return { success: true, message: "تمت إضافة العرض بنجاح!", offer: JSON.parse(JSON.stringify(newOffer)) };
   } catch (error) {
@@ -72,6 +87,23 @@ export async function updateOfferAction(offerId: string, formData: FormData): Pr
     if (offerIndex === -1) {
       return { success: false, message: "العرض غير موجود." };
     }
+    const existingOffer = offersStore[offerIndex];
+
+    const imageUrlFromText = formData.get('imageUrl') as string | null;
+    const imageUrlFile = formData.get('imageUrlFile') as File | null;
+    let finalImageUrl: string | undefined = existingOffer.imageUrl;
+
+    if (imageUrlFile && imageUrlFile.size > 0) {
+      finalImageUrl = generatePlaceholderUrl('offer_banner_updated', 800, 300);
+    } else {
+      if (imageUrlFromText === "") { // User explicitly cleared the text input
+          finalImageUrl = undefined;
+      } else if (imageUrlFromText && imageUrlFromText !== existingOffer.imageUrl) { // User typed a new URL
+          finalImageUrl = imageUrlFromText;
+      }
+      // else, finalImageUrl remains existingOffer.imageUrl (already set)
+    }
+
 
     const updatedOfferData: Partial<Offer> = {
       title: formData.get('title') as string,
@@ -81,7 +113,7 @@ export async function updateOfferAction(offerId: string, formData: FormData): Pr
       discountPercentage: formData.get('discountPercentage') ? parseFloat(formData.get('discountPercentage') as string) : undefined,
       startDate: formData.get('startDate') as string,
       endDate: formData.get('endDate') as string,
-      imageUrl: formData.get('imageUrl') as string || undefined,
+      imageUrl: finalImageUrl,
       isActive: formData.get('isActive') === 'on',
       couponCode: formData.get('couponCode') as string || undefined,
     };
@@ -97,14 +129,21 @@ export async function updateOfferAction(offerId: string, formData: FormData): Pr
     }
 
 
-    offersStore[offerIndex] = { ...offersStore[offerIndex], ...updatedOfferData };
-    console.log("Offer updated:", offersStore[offerIndex]);
+    offersStore[offerIndex] = { ...existingOffer, ...updatedOfferData };
+    const currentUpdatedOffer = offersStore[offerIndex];
+    console.log("Offer updated:", currentUpdatedOffer);
     
     revalidatePath('/admin/offers');
     revalidatePath(`/admin/offers/edit/${offerId}`);
     revalidatePath('/');
+    revalidatePath('/offers');
+    if (currentUpdatedOffer.productId) revalidatePath(`/products/${currentUpdatedOffer.productId}`);
+    if (existingOffer.productId && existingOffer.productId !== currentUpdatedOffer.productId) revalidatePath(`/products/${existingOffer.productId}`);
+    if (currentUpdatedOffer.categorySlug) revalidatePath(`/category/${currentUpdatedOffer.categorySlug}`);
+    if (existingOffer.categorySlug && existingOffer.categorySlug !== currentUpdatedOffer.categorySlug) revalidatePath(`/category/${existingOffer.categorySlug}`);
 
-    return { success: true, message: "تم تحديث العرض بنجاح!", offer: JSON.parse(JSON.stringify(offersStore[offerIndex])) };
+
+    return { success: true, message: "تم تحديث العرض بنجاح!", offer: JSON.parse(JSON.stringify(currentUpdatedOffer)) };
   } catch (error) {
     console.error("Error updating offer:", error);
     const errorMessage = error instanceof Error ? error.message : "حدث خطأ غير معروف.";
@@ -114,17 +153,21 @@ export async function updateOfferAction(offerId: string, formData: FormData): Pr
 
 export async function deleteOfferAction(offerId: string): Promise<{ success: boolean; message: string }> {
   try {
-    const initialLength = offersStore.length;
-    offersStore = offersStore.filter(o => o.id !== offerId);
-    
-    if (offersStore.length === initialLength) {
+    const offerIndex = offersStore.findIndex(o => o.id === offerId);
+    if (offerIndex === -1) {
       return { success: false, message: "العرض غير موجود ليتم حذفه." };
     }
+    const offerToDelete = offersStore[offerIndex];
 
+
+    offersStore = offersStore.filter(o => o.id !== offerId);    
     console.log("Offer deleted, ID:", offerId);
     
     revalidatePath('/admin/offers');
     revalidatePath('/');
+    revalidatePath('/offers');
+    if (offerToDelete.productId) revalidatePath(`/products/${offerToDelete.productId}`);
+    if (offerToDelete.categorySlug) revalidatePath(`/category/${offerToDelete.categorySlug}`);
 
     return { success: true, message: "تم حذف العرض بنجاح." };
   } catch (error) {

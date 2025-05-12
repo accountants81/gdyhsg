@@ -1,7 +1,7 @@
 
 "use client";
 import { useFormStatus } from 'react-dom';
-import React, { useEffect, useState, useActionState } from 'react'; // useActionState from React
+import React, { useEffect, useState, useActionState } from 'react'; 
 import { updateOfferAction, getOfferById } from '../../actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,11 +12,12 @@ import { CATEGORIES } from '@/lib/constants';
 import { MOCK_PRODUCTS } from '@/data/products';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import Link from 'next/link';
-import { ArrowRight, Loader2, Save } from 'lucide-react';
+import { ArrowRight, Loader2, Save, ImageOff } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import type { Offer } from '@/lib/types';
 import { Checkbox } from '@/components/ui/checkbox';
 import { format } from 'date-fns';
+import Image from 'next/image';
 
 const initialState = {
   success: false,
@@ -24,7 +25,7 @@ const initialState = {
   offer: undefined as Offer | undefined,
 };
 
-const EMPTY_SELECT_VALUE = "NO_SELECTION"; // Consistent value for "no selection"
+const EMPTY_SELECT_VALUE = "NO_SELECTION"; 
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -46,6 +47,9 @@ export default function EditOfferPage({ params }: EditOfferPageProps) {
   const { toast } = useToast();
   const [offer, setOffer] = useState<Offer | null>(null);
   const [isLoadingOffer, setIsLoadingOffer] = useState(true);
+  const [imageFilePreview, setImageFilePreview] = useState<string | null>(null);
+  const [imageUrlText, setImageUrlText] = useState<string>('');
+
 
   useEffect(() => {
     async function fetchOffer() {
@@ -53,6 +57,7 @@ export default function EditOfferPage({ params }: EditOfferPageProps) {
       const fetchedOffer = await getOfferById(offerId);
       if (fetchedOffer) {
         setOffer(fetchedOffer);
+        setImageUrlText(fetchedOffer.imageUrl || '');
       } else {
         toast({ title: 'خطأ', description: 'لم يتم العثور على العرض.', variant: 'destructive' });
       }
@@ -66,11 +71,27 @@ export default function EditOfferPage({ params }: EditOfferPageProps) {
       if (state.success && state.offer) {
         toast({ title: 'نجاح', description: state.message });
         setOffer(state.offer); 
+        setImageFilePreview(null); // Clear file preview
+        setImageUrlText(state.offer.imageUrl || ''); // Update text URL from server response
       } else if (!state.success) {
         toast({ title: 'خطأ', description: state.message, variant: 'destructive' });
       }
     }
   }, [state, toast]);
+
+  const handleImageFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImageFilePreview(URL.createObjectURL(file));
+    } else {
+      setImageFilePreview(null);
+    }
+  };
+
+  const handleImageUrlTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setImageUrlText(e.target.value);
+    if(imageFilePreview) setImageFilePreview(null); // Clear file preview if user types URL
+  };
 
   if (isLoadingOffer) {
     return (
@@ -103,6 +124,7 @@ export default function EditOfferPage({ params }: EditOfferPageProps) {
     }
   };
 
+  const displayImageUrl = imageFilePreview || imageUrlText || null;
 
   return (
     <div className="space-y-6 max-w-3xl mx-auto">
@@ -115,10 +137,10 @@ export default function EditOfferPage({ params }: EditOfferPageProps) {
         </Button>
       </div>
       <Card>
-        <form action={formAction}>
+        <form action={formAction} encType="multipart/form-data">
           <CardHeader>
             <CardTitle>تفاصيل العرض</CardTitle>
-            <CardDescription>قم بتحديث معلومات العرض.</CardDescription>
+            <CardDescription>قم بتحديث معلومات العرض. يمكنك رفع صورة جديدة أو تعديل الرابط.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
@@ -182,9 +204,28 @@ export default function EditOfferPage({ params }: EditOfferPageProps) {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="imageUrl">رابط صورة العرض (اختياري)</Label>
-              <Input id="imageUrl" name="imageUrl" type="url" defaultValue={offer.imageUrl || ''} />
+                <Label htmlFor="imageUrlFile">تغيير صورة العرض (رفع ملف)</Label>
+                <Input id="imageUrlFile" name="imageUrlFile" type="file" accept="image/*" onChange={handleImageFileChange} />
+                 <p className="text-xs text-muted-foreground">أو عدّل رابط الصورة أدناه. الرفع المباشر له الأولوية.</p>
             </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="imageUrl">رابط صورة العرض (URL)</Label>
+              <Input id="imageUrl" name="imageUrl" type="url" placeholder="اتركه فارغًا أو احذف الرابط لإزالة الصورة إذا لم يتم رفع ملف" value={imageUrlText} onChange={handleImageUrlTextChange} />
+            </div>
+
+            {displayImageUrl ? (
+                 <div className="my-2">
+                    <Label>معاينة الصورة الحالية/الجديدة</Label>
+                    <Image src={displayImageUrl} alt="معاينة صورة العرض" width={400} height={150} className="rounded-md object-contain aspect-[16/6] border mt-1" data-ai-hint="offer banner current preview"/>
+                </div>
+            ) : (
+                 <div className="my-2 p-4 border border-dashed rounded-md flex flex-col items-center justify-center text-muted-foreground aspect-[16/6]">
+                    <ImageOff className="h-12 w-12 mb-2" />
+                    <p>لا توجد صورة محددة للعرض</p>
+                </div>
+            )}
+
 
             <div className="space-y-2">
               <Label htmlFor="couponCode">كود الخصم (اختياري)</Label>

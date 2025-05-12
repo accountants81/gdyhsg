@@ -1,7 +1,7 @@
 
 "use client";
 import { useFormStatus } from 'react-dom';
-import React, { useEffect, useActionState } from 'react'; // useActionState from React
+import React, { useEffect, useActionState, useState } from 'react'; 
 import { addOfferAction } from '../actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,16 +12,17 @@ import { CATEGORIES } from '@/lib/constants';
 import { MOCK_PRODUCTS } from '@/data/products'; 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import Link from 'next/link';
-import { ArrowRight, Loader2, PlusCircle } from 'lucide-react';
+import { ArrowRight, Loader2, PlusCircle, ImageUp, ImageOff } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Checkbox } from '@/components/ui/checkbox';
+import Image from 'next/image';
 
 const initialState = {
   success: false,
   message: '',
 };
 
-const EMPTY_SELECT_VALUE = "NO_SELECTION"; // Consistent value for "no selection"
+const EMPTY_SELECT_VALUE = "NO_SELECTION"; 
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -37,17 +38,40 @@ export default function AddOfferPage() {
   const [state, formAction] = useActionState(addOfferAction, initialState);
   const { toast } = useToast();
   const formRef = React.useRef<HTMLFormElement>(null);
+  const [imageFilePreview, setImageFilePreview] = useState<string | null>(null);
+  const [imageUrlText, setImageUrlText] = useState<string>('');
+
+
+  const handleImageFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImageFilePreview(URL.createObjectURL(file));
+    } else {
+      setImageFilePreview(null);
+    }
+  };
+  
+  const handleImageUrlTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setImageUrlText(e.target.value);
+    if(imageFilePreview) setImageFilePreview(null); // Clear file preview if user types URL
+  }
+
 
   useEffect(() => {
     if (state.message) {
       if (state.success) {
         toast({ title: 'نجاح', description: state.message });
         formRef.current?.reset(); 
+        setImageFilePreview(null);
+        setImageUrlText('');
       } else {
         toast({ title: 'خطأ', description: state.message, variant: 'destructive' });
       }
     }
   }, [state, toast]);
+
+  const displayImageUrl = imageFilePreview || imageUrlText || null;
+
 
   return (
     <div className="space-y-6 max-w-3xl mx-auto">
@@ -60,10 +84,10 @@ export default function AddOfferPage() {
         </Button>
       </div>
       <Card>
-        <form ref={formRef} action={formAction}>
+        <form ref={formRef} action={formAction} encType="multipart/form-data">
           <CardHeader>
             <CardTitle>تفاصيل العرض</CardTitle>
-            <CardDescription>قم بإدخال معلومات العرض الجديد.</CardDescription>
+            <CardDescription>قم بإدخال معلومات العرض الجديد. يمكنك رفع صورة أو إدخال رابط مباشر لها.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
@@ -125,12 +149,31 @@ export default function AddOfferPage() {
                 <Input id="endDate" name="endDate" type="date" required />
               </div>
             </div>
+            
+            <div className="space-y-2">
+                <Label htmlFor="imageUrlFile">صورة العرض (رفع ملف)</Label>
+                <Input id="imageUrlFile" name="imageUrlFile" type="file" accept="image/*" onChange={handleImageFileChange} />
+                 <p className="text-xs text-muted-foreground">أو أدخل رابط صورة أدناه. الرفع المباشر له الأولوية.</p>
+            </div>
 
             <div className="space-y-2">
-              <Label htmlFor="imageUrl">رابط صورة العرض (اختياري)</Label>
-              <Input id="imageUrl" name="imageUrl" type="url" placeholder="https://example.com/offer-banner.jpg" />
+              <Label htmlFor="imageUrl">رابط صورة العرض (URL)</Label>
+              <Input id="imageUrl" name="imageUrl" type="url" placeholder="https://example.com/offer-banner.jpg" value={imageUrlText} onChange={handleImageUrlTextChange}/>
             </div>
             
+            {displayImageUrl ? (
+                <div className="my-2">
+                    <Label>معاينة الصورة</Label>
+                    <Image src={displayImageUrl} alt="معاينة صورة العرض" width={400} height={150} className="rounded-md object-contain aspect-[16/6] border mt-1" data-ai-hint="offer banner preview"/>
+                </div>
+            ) : (
+                 <div className="my-2 p-4 border border-dashed rounded-md flex flex-col items-center justify-center text-muted-foreground aspect-[16/6]">
+                    <ImageOff className="h-12 w-12 mb-2" />
+                    <p>لا توجد صورة لعرضها</p>
+                </div>
+            )}
+
+
             <div className="space-y-2">
               <Label htmlFor="couponCode">كود الخصم (اختياري)</Label>
               <Input id="couponCode" name="couponCode" type="text" placeholder="مثال: RAMADAN20" />

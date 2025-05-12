@@ -56,18 +56,28 @@ body {
 
     --radius: 0.5rem;
 
-    /* Sidebar specific colors - Opaque */
-    --sidebar-background-hsl: 220 28% 10%; 
-    --sidebar-background: hsl(var(--sidebar-background-hsl)); /* Opaque */
-    --sidebar-foreground: hsl(var(--foreground-hsl));
-    --sidebar-primary: hsl(var(--primary-hsl));
-    --sidebar-primary-foreground: hsl(var(--primary-foreground-hsl));
-    --sidebar-accent-hsl: 45 90% 50%; /* Slightly darker gold for hover */
+    /* Sidebar specific colors - Opaque Gold Theme */
+    --sidebar-background-hsl: var(--primary-hsl); /* Rich Gold/Amber */
+    --sidebar-background: hsl(var(--sidebar-background-hsl)); 
+    --sidebar-foreground-hsl: var(--primary-foreground-hsl); /* Very Dark Brown/Black */
+    --sidebar-foreground: hsl(var(--sidebar-foreground-hsl));
+
+    /* Active item styles */
+    --sidebar-primary-hsl: var(--primary-foreground-hsl); /* Dark Brown/Black background for active item */
+    --sidebar-primary: hsl(var(--sidebar-primary-hsl));
+    --sidebar-primary-foreground-hsl: var(--primary-hsl); /* Gold text for active item */
+    --sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground-hsl));
+
+    /* Hover item styles */
+    --sidebar-accent-hsl: 45 90% 60%; /* Lighter Gold for hover background */
     --sidebar-accent: hsl(var(--sidebar-accent-hsl));
-    --sidebar-accent-foreground-hsl: hsl(var(--primary-foreground-hsl));
-    --sidebar-border-hsl: 220 20% 15%;
+    --sidebar-accent-foreground-hsl: var(--primary-foreground-hsl); /* Dark Brown/Black text for hover */
+    --sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground-hsl));
+
+    --sidebar-border-hsl: 45 80% 40%; /* Darker Gold for border */
     --sidebar-border: hsl(var(--sidebar-border-hsl));
-    --sidebar-ring: hsl(var(--ring-hsl));
+    --sidebar-ring: hsl(var(--ring-hsl)); /* Standard ring color */
+
 
     /* Chart colors */
     --chart-1: hsl(var(--primary-hsl)); /* Gold */
@@ -78,7 +88,7 @@ body {
   }
 
   .dark {
-    /* Apply the same dark theme for consistency, as it's now the default */
+    /* Dark theme inherits the root settings as it's primarily a dark theme */
     --background-hsl: 220 30% 8%;
     --foreground-hsl: 40 50% 95%;
     --card-hsl: 220 25% 12%;
@@ -99,15 +109,24 @@ body {
     --input-hsl: 220 20% 18%;
     --ring-hsl: 45 80% 65%;
 
-    /* Sidebar specific colors for dark - Opaque */
-    --sidebar-background-hsl: 220 28% 10%;
-    --sidebar-background: hsl(var(--sidebar-background-hsl)); /* Opaque */
-    --sidebar-foreground: hsl(var(--foreground-hsl));
-    --sidebar-primary: hsl(var(--primary-hsl));
-    --sidebar-primary-foreground: hsl(var(--primary-foreground-hsl));
-    --sidebar-accent-hsl: 45 90% 50%;
-    --sidebar-accent-foreground-hsl: hsl(var(--primary-foreground-hsl));
-    --sidebar-border-hsl: 220 20% 15%;
+    /* Sidebar specific colors for dark - Opaque Gold Theme (same as root for consistency) */
+    --sidebar-background-hsl: var(--primary-hsl);
+    --sidebar-background: hsl(var(--sidebar-background-hsl));
+    --sidebar-foreground-hsl: var(--primary-foreground-hsl);
+    --sidebar-foreground: hsl(var(--sidebar-foreground-hsl));
+    
+    --sidebar-primary-hsl: var(--primary-foreground-hsl);
+    --sidebar-primary: hsl(var(--sidebar-primary-hsl));
+    --sidebar-primary-foreground-hsl: var(--primary-hsl);
+    --sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground-hsl));
+
+    --sidebar-accent-hsl: 45 90% 60%;
+    --sidebar-accent: hsl(var(--sidebar-accent-hsl));
+    --sidebar-accent-foreground-hsl: var(--primary-foreground-hsl);
+    --sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground-hsl));
+
+    --sidebar-border-hsl: 45 80% 40%;
+    --sidebar-border: hsl(var(--sidebar-border-hsl));
     --sidebar-ring: hsl(var(--ring-hsl));
 
     /* Chart colors */
@@ -141,3 +160,4 @@ body {
   max-width: 100vw; /* Ensure body does not exceed viewport width */
   min-height: 100vh;
 }
+
