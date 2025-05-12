@@ -25,7 +25,7 @@ export default async function HomePage() {
 
   return (
     <MainLayout>
-      <div className="w-full max-w-screen-2xl mx-auto px-4">
+      <div className="w-full max-w-screen-xl mx-auto px-4"> {/* Changed max-w-screen-2xl to max-w-screen-xl */}
         <section className="text-center py-12 bg-card rounded-lg shadow-md my-8">
           <h1 className="text-4xl font-bold mb-4 text-primary">مرحباً بك في AAAMO</h1>
           <p className="text-lg text-muted-foreground mb-6">

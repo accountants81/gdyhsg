@@ -15,7 +15,7 @@ export default function Footer() {
 
   return (
     <footer className="border-t border-border/40 bg-background/95">
-      <div className="container py-8 max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container py-8 max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8"> {/* Changed max-w-screen-2xl to max-w-screen-xl */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           
           <div className="md:col-span-1">
