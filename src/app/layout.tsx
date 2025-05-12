@@ -17,6 +17,7 @@ export default function RootLayout({
     <html lang="ar" dir="rtl">
       <head>
         <meta name="google-site-verification" content="erc3DhRH1Zx4lamgfNDwou_YZxbsSIYgVBByQy9YDZA" />
+        <meta name="google-site-verification" content="DvlRcHJDEA1-EXuqql8u2TfScwZ8JrfdyINslYZ5TjE" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=Noto+Sans+Arabic:wght@400;500;700&display=swap" rel="stylesheet" />

@@ -9,72 +9,72 @@ body {
 
 @layer base {
   :root {
-    --background-hsl: 240 10% 10%; /* Very Dark Desaturated Indigo */
+    --background-hsl: 0 0% 3%; /* Almost Black */
     --background: hsl(var(--background-hsl)); 
-    --foreground-hsl: 30 5% 85%;  /* Warm Off-White */
+    --foreground-hsl: 0 0% 95%;  /* Very Light Gray/Off-White */
     --foreground: hsl(var(--foreground-hsl));
 
-    --card-hsl: 240 10% 15%; /* Darker Indigo for Cards */
+    --card-hsl: 0 0% 7%; /* Very Dark Gray for Cards, slightly lighter than background */
     --card: hsl(var(--card-hsl));
     --card-foreground: hsl(var(--foreground-hsl));
 
-    --popover-hsl: 240 10% 12%; /* Darker Indigo for Popovers */
+    --popover-hsl: 0 0% 5%; /* Even Darker for Popovers */
     --popover: hsl(var(--popover-hsl));
     --popover-foreground: hsl(var(--foreground-hsl));
 
-    --primary-hsl: 35 70% 50%; /* Gold/Bronze */
+    --primary-hsl: 40 85% 55%; /* Vibrant Gold */
     --primary: hsl(var(--primary-hsl)); 
-    --primary-foreground-hsl: 35 70% 10%; /* Dark Bronze for text on primary */
+    --primary-foreground-hsl: 40 85% 5%; /* Very Dark Brown for text on primary */
     --primary-foreground: hsl(var(--primary-foreground-hsl));
 
-    --secondary-hsl: 210 15% 30%; /* Muted Blue-Grey */
+    --secondary-hsl: 210 20% 25%; /* Dark Muted Blue */
     --secondary: hsl(var(--secondary-hsl)); 
-    --secondary-foreground-hsl: 210 15% 80%;
+    --secondary-foreground-hsl: 210 20% 85%; /* Light Blue-Gray for text on secondary */
     --secondary-foreground: hsl(var(--secondary-foreground-hsl));
 
-    --muted-hsl: 210 15% 20%;   /* Darker Muted Blue-Grey */
+    --muted-hsl: 0 0% 12%;   /* Dark Gray for muted elements */
     --muted: hsl(var(--muted-hsl));
-    --muted-foreground-hsl: 210 15% 55%; /* Lighter Muted Grey */
+    --muted-foreground-hsl: 0 0% 60%; /* Lighter Gray for muted text */
     --muted-foreground: hsl(var(--muted-foreground-hsl));
 
-    --accent-hsl: 45 80% 55%;  /* Brighter Gold */
+    --accent-hsl: 30 75% 60%;  /* Warm Orange-Gold */
     --accent: hsl(var(--accent-hsl)); 
-    --accent-foreground-hsl: 45 80% 10%; /* Dark Gold for text on accent */
+    --accent-foreground-hsl: 30 75% 10%; /* Dark Orange-Brown for text on accent */
     --accent-foreground: hsl(var(--accent-foreground-hsl));
 
-    --destructive-hsl: 0 60% 50%; /* Red */
+    --destructive-hsl: 0 70% 50%; /* Vibrant Red */
     --destructive: hsl(var(--destructive-hsl));
-    --destructive-foreground-hsl: 0 0% 98%; /* White/Very Light */
+    --destructive-foreground-hsl: 0 0% 98%; /* White/Very Light for text on destructive */
     --destructive-foreground: hsl(var(--destructive-foreground-hsl));
 
-    --border-hsl: 240 10% 25%;   /* Subtle Border for Dark Theme */
+    --border-hsl: 0 0% 15%;   /* Subtle Dark Border */
     --border: hsl(var(--border-hsl));
-    --input-hsl: 240 10% 18%;    /* Darker Input Background */
+    --input-hsl: 0 0% 10%;    /* Dark Input Background */
     --input: hsl(var(--input-hsl));
-    --ring-hsl: 35 70% 60%;     /* Gold for focus rings */
+    --ring-hsl: 40 85% 60%;     /* Gold for focus rings, matching primary */
     --ring: hsl(var(--ring-hsl)); 
 
     --radius: 0.5rem;
 
     /* Sidebar specific colors - adjusted to the new theme */
-    --sidebar-background-hsl: 240 10% 12%; /* Matches popover background */
-    --sidebar-background: hsla(var(--sidebar-background-hsl), 0.9); /* Semi-transparent */
+    --sidebar-background-hsl: 0 0% 6%; /* Slightly lighter than main background */
+    --sidebar-background: hsla(var(--sidebar-background-hsl), 0.95); /* Semi-transparent */
     --sidebar-foreground: hsl(var(--foreground-hsl));
     --sidebar-primary: hsl(var(--primary-hsl)); 
     --sidebar-primary-foreground: hsl(var(--primary-foreground-hsl)); 
-    --sidebar-accent-hsl: 240 10% 18%; /* Muted accent for sidebar items (similar to input) */
+    --sidebar-accent-hsl: 0 0% 10%; /* Muted accent for sidebar items */
     --sidebar-accent: hsl(var(--sidebar-accent-hsl)); 
     --sidebar-accent-foreground: hsl(var(--primary-hsl)); /* Gold text on sidebar accent */
-    --sidebar-border-hsl: 240 10% 20%;
+    --sidebar-border-hsl: 0 0% 12%;
     --sidebar-border: hsl(var(--sidebar-border-hsl));
     --sidebar-ring: hsl(var(--ring-hsl)); 
 
     /* Chart colors - adjusted to fit the new theme */
-    --chart-1: hsl(var(--primary-hsl)); /* Gold/Bronze */
-    --chart-2: hsl(190 70% 50%);  /* Teal (complementary) */
-    --chart-3: hsl(0 50% 60%); /* Soft Red (accent) */
-    --chart-4: hsl(210 40% 70%); /* Light Blue-Grey */
-    --chart-5: hsl(60 60% 65%); /* Soft Yellow (another accent) */
+    --chart-1: hsl(var(--primary-hsl)); /* Gold */
+    --chart-2: hsl(var(--accent-hsl));  /* Orange-Gold */
+    --chart-3: hsl(190 70% 55%); /* Teal (complementary) */
+    --chart-4: hsl(270 50% 65%); /* Purple (another accent) */
+    --chart-5: hsl(0 0% 70%); /* Light Grey */
   }
 
 }
@@ -101,3 +101,4 @@ body {
   max-width: 100vw; /* Ensure body does not exceed viewport width */
   min-height: 100vh;
 }
+
