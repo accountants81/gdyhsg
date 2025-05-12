@@ -1,7 +1,7 @@
 
 "use client";
 import { useFormStatus } from 'react-dom';
-import { useActionState } from 'react';
+import React, { useActionState } from 'react';
 import { addProductAction } from '../actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -13,7 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import Link from 'next/link';
 import { ArrowRight, Loader2, PlusCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const initialState = {
   success: false,
@@ -73,7 +73,7 @@ export default function AddProductPage() {
         </Button>
       </div>
       <Card>
-        <form action={formAction} encType="multipart/form-data">
+        <form action={formAction}>
           <CardHeader>
             <CardTitle>تفاصيل المنتج</CardTitle>
             <CardDescription>قم بإدخال معلومات المنتج الجديد. يمكنك إضافة صورة رئيسية و حتى 4 صور إضافية.</CardDescription>

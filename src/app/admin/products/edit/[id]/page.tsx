@@ -130,7 +130,7 @@ export default function EditProductPage({ params }: EditProductPageProps) {
         </Button>
       </div>
       <Card>
-        <form action={formAction} encType="multipart/form-data">
+        <form action={formAction}>
           <CardHeader>
             <CardTitle>تفاصيل المنتج</CardTitle>
             <CardDescription>قم بتحديث معلومات المنتج. يمكنك رفع صور جديدة لاستبدال الحالية.</CardDescription>

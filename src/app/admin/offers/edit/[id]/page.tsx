@@ -137,7 +137,7 @@ export default function EditOfferPage({ params }: EditOfferPageProps) {
         </Button>
       </div>
       <Card>
-        <form action={formAction} encType="multipart/form-data">
+        <form action={formAction}>
           <CardHeader>
             <CardTitle>تفاصيل العرض</CardTitle>
             <CardDescription>قم بتحديث معلومات العرض. يمكنك رفع صورة جديدة أو تعديل الرابط.</CardDescription>

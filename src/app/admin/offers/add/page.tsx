@@ -84,7 +84,7 @@ export default function AddOfferPage() {
         </Button>
       </div>
       <Card>
-        <form ref={formRef} action={formAction} encType="multipart/form-data">
+        <form ref={formRef} action={formAction}>
           <CardHeader>
             <CardTitle>تفاصيل العرض</CardTitle>
             <CardDescription>قم بإدخال معلومات العرض الجديد. يمكنك رفع صورة أو إدخال رابط مباشر لها.</CardDescription>
