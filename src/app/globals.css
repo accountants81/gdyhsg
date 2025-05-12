@@ -9,58 +9,7 @@ body {
 
 @layer base {
   :root {
-    --background: 0 0% 7%; /* Almost Black */
-    --foreground: 0 0% 93%; /* Light Gray */
-
-    --card: 0 0% 12%; /* Darker Gray for cards */
-    --card-foreground: 0 0% 93%;
-
-    --popover: 0 0% 12%;
-    --popover-foreground: 0 0% 93%;
-
-    --primary: 165 65% 50%; /* Teal - good contrast on dark */
-    --primary-foreground: 0 0% 100%; /* White */
-
-    --secondary: 0 0% 18%; /* Dark Gray for secondary elements */
-    --secondary-foreground: 0 0% 85%; /* Lighter Gray text */
-
-    --muted: 0 0% 22%; /* Muted Dark Gray */
-    --muted-foreground: 0 0% 55%; /* Muted Gray text */
-
-    --accent: 25 85% 55%; /* Orange - vibrant on dark */
-    --accent-foreground: 0 0% 100%; /* White */
-
-    --destructive: 0 70% 55%; /* Red - visible on dark */
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 0 0% 20%; /* Dark Gray border */
-    --input: 0 0% 15%; /* Dark Gray input background */
-    --ring: 165 65% 55%; /* Teal for focus rings */
-
-    --radius: 0.5rem;
-
-    /* Sidebar specific colors for the new dark default theme */
-    --sidebar-background: hsla(0, 0%, 9%, 0.9); /* Semi-transparent almost black */
-    --sidebar-foreground: 0 0% 88%; /* Light Gray for sidebar text */
-    --sidebar-primary: hsl(var(--primary)); /* Teal (from root) */
-    --sidebar-primary-foreground: hsl(var(--primary-foreground)); /* White (from root) */
-    --sidebar-accent: 0 0% 17%; /* Darker Gray for hover/active items */
-    --sidebar-accent-foreground: hsl(var(--primary)); /* Teal text on accent */
-    --sidebar-border: 0 0% 24%; /* Dark Gray border for sidebar */
-    --sidebar-ring: hsl(var(--ring)); /* Teal (from root) */
-
-    /* Chart colors (kept from original dark theme, likely still suitable) */
-    --chart-1: 165 70% 55%; 
-    --chart-2: 25 90% 55%;
-    --chart-3: 180 60% 55%;
-    --chart-4: 300 70% 65%;
-    --chart-5: 50 80% 60%;
-  }
-
-  .dark {
-    /* This .dark theme can be an alternative dark theme or removed if not needed now that default is dark. */
-    /* For now, let's make it slightly different from the new default dark theme for distinction if a switcher is ever implemented. */
-    --background: 220 20% 10%; /* Dark Slate Blue (original dark theme) */
+    --background: 220 20% 10%; /* Dark Slate Blue (new default) */
     --foreground: 220 10% 90%; /* Light Grayish Blue */
 
     --card: 220 20% 13%;
@@ -69,8 +18,8 @@ body {
     --popover: 220 20% 10%;
     --popover-foreground: 220 10% 90%;
 
-    --primary: 165 70% 55%; /* Brighter Teal */
-    --primary-foreground: 220 20% 98%; /* Very Light Blue/White */
+    --primary: 200 80% 55%; /* Bright Cyan */
+    --primary-foreground: 220 20% 5%; /* Very Dark Blue for text on primary */
 
     --secondary: 220 20% 20%; /* Darker Slate Blue */
     --secondary-foreground: 220 10% 85%; /* Lighter text on secondary */
@@ -78,33 +27,39 @@ body {
     --muted: 220 20% 18%; /* Muted Dark Slate Blue */
     --muted-foreground: 220 10% 65%;
 
-    --accent: 25 90% 55%; /* Vibrant Orange */
+    --accent: 45 90% 55%; /* Vibrant Yellow/Gold */
     --accent-foreground: 220 20% 10%; /* Dark text on accent */
 
-    --destructive: 0 65% 55%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive: 0 70% 50%; /* Red */
+    --destructive-foreground: 0 0% 98%; /* White/Very Light */
 
     --border: 220 20% 22%;
-    --input: 220 20% 16%;
-    --ring: 165 70% 60%; /* Brighter Teal for focus rings */
-    
-    /* Sidebar specific colors for dark theme */
+    --input: 220 20% 16%; /* This is border-input for shadcn. Input components use bg-background for background. */
+    --ring: 200 80% 60%; /* Brighter Cyan for focus rings */
+
+    --radius: 0.5rem;
+
+    /* Sidebar specific colors for the new dark default theme */
     --sidebar-background: hsla(220, 20%, 11%, 0.9); /* Semi-transparent dark slate blue */
     --sidebar-foreground: 220 10% 85%;
-    --sidebar-primary: 165 70% 55%; /* Brighter Teal */
-    --sidebar-primary-foreground: 220 20% 98%;
+    --sidebar-primary: hsl(var(--primary)); 
+    --sidebar-primary-foreground: hsl(var(--primary-foreground)); 
     --sidebar-accent: 220 20% 18%; /* For hover/active items */
-    --sidebar-accent-foreground: 165 70% 55%; /* Brighter Teal for text on accent */
+    --sidebar-accent-foreground: hsl(var(--primary)); /* Bright Cyan text on accent */
     --sidebar-border: 220 20% 25%;
-    --sidebar-ring: 165 70% 60%; /* Brighter Teal */
+    --sidebar-ring: hsl(var(--ring)); 
 
     /* Chart colors */
-    --chart-1: 165 70% 55%; 
-    --chart-2: 25 90% 55%;
-    --chart-3: 180 60% 55%;
-    --chart-4: 300 70% 65%;
-    --chart-5: 50 80% 60%;
+    --chart-1: 200 70% 55%; 
+    --chart-2: 45 90% 55%;
+    --chart-3: 280 60% 60%; /* Purple */
+    --chart-4: 130 60% 55%; /* Green */
+    --chart-5: 0 70% 60%; /* Reddish-Orange */
   }
+
+  /* The .dark class block is removed as :root now defines the dark theme. 
+     If an alternative light theme is needed later, it can be added here.
+   */
 }
 
 @layer base {
