@@ -10,7 +10,12 @@ import { MOCK_PRODUCTS } from '@/data/products'; // Import mock products
 let productsStore: Product[] = [...MOCK_PRODUCTS.map(p => ({...p, imageUrls: [...p.imageUrls]}))];
 
 export async function getProductById(productId: string): Promise<Product | undefined> {
-  return productsStore.find(p => p.id === productId);
+  const product = productsStore.find(p => p.id === productId);
+  if (product) {
+    // Return a deep copy to prevent accidental mutation of the store if needed elsewhere
+    return JSON.parse(JSON.stringify(product));
+  }
+  return undefined;
 }
 
 export async function addProductAction(formData: FormData): Promise<{ success: boolean; message: string; product?: Product }> {

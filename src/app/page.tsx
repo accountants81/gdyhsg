@@ -22,12 +22,12 @@ export default async function HomePage() {
         {/* Enhanced Hero Section */}
         <section className="relative bg-card text-foreground p-8 md:p-12 rounded-lg shadow-xl my-8 overflow-hidden min-h-[300px] md:min-h-[400px] flex flex-col justify-center items-center text-center">
           <Image
-            src="https://picsum.photos/seed/hero-banner/1200/500"
+            src="https://picsum.photos/seed/hero-banner-tech/1200/500" // Updated seed for a potentially different image
             alt="Promotional Banner"
             fill
-            className="object-cover opacity-20"
-            priority
-            data-ai-hint="abstract tech"
+            className="object-cover opacity-20" // Maintained opacity for text readability
+            priority // Ensure hero image loads quickly
+            data-ai-hint="abstract technology" // Updated AI hint
           />
           <div className="relative z-10">
             <h1 className="text-4xl md:text-5xl font-bold mb-4 text-primary animate-fade-in-down">
