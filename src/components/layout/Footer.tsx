@@ -37,7 +37,7 @@ export default function Footer() {
             </ul>
           </div>
           
-          <div className="md:col-span-1"> 
+          <div className="md:col-span-1 md:pe-4"> {/* Added md:pe-4 for padding-left in RTL */}
             <h3 className="text-lg font-semibold mb-3 md:text-start text-center text-foreground">تواصل معنا</h3>
             <div className="flex space-x-4 rtl:space-x-reverse mb-4 md:justify-start justify-center">
               {settings.facebookUrl && (

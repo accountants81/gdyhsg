@@ -1,6 +1,6 @@
 
 import MainLayout from '@/components/layout/MainLayout';
-import { getProductById } from '@/app/admin/products/actions';
+import { getProductById, getAllProducts } from '@/app/admin/products/actions'; // Import getAllProducts
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
@@ -10,7 +10,7 @@ import { ShoppingCart, ThumbsUp } from 'lucide-react';
 import AddToCartButton from './components/AddToCartButton';
 import ProductImageGallery from './components/ProductImageGallery';
 import SmartRecommendationsLoader from './components/SmartRecommendationsLoader';
-import { MOCK_PRODUCTS } from '@/data/products'; // For related products as fallback
+import type { Product } from '@/lib/types'; // Import Product type
 
 interface ProductDetailsPageProps {
   params: {
@@ -19,8 +19,10 @@ interface ProductDetailsPageProps {
 }
 
 // Simulate fetching related products (could be by category, etc.)
-async function getRelatedProducts(currentProductId: string, categorySlug: string): Promise<typeof MOCK_PRODUCTS> {
-  return MOCK_PRODUCTS.filter(p => p.categorySlug === categorySlug && p.id !== currentProductId).slice(0, 4);
+// Updated to use getAllProducts and then filter by category and exclude current product
+async function getRelatedProducts(currentProductId: string, currentProductCategorySlug: string): Promise<Product[]> {
+  const allProducts = await getAllProducts();
+  return allProducts.filter(p => p.categorySlug === currentProductCategorySlug && p.id !== currentProductId).slice(0, 4);
 }
 
 
@@ -86,7 +88,7 @@ export default async function ProductDetailsPage({ params }: ProductDetailsPageP
               <ThumbsUp className="mr-2 h-6 w-6 text-primary" />
               منتجات مشابهة قد تعجبك
             </h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 md:gap-6">
               {relatedProducts.map(relatedProduct => (
                 <Card key={relatedProduct.id} className="overflow-hidden shadow-lg hover:shadow-primary/20 transition-all duration-300 flex flex-col h-full group bg-card hover:border-primary/50 border border-transparent">
                   <CardHeader className="p-0">

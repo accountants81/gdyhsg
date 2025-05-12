@@ -1,7 +1,7 @@
 
 import MainLayout from '@/components/layout/MainLayout';
 import ProductGrid from '@/components/products/ProductGrid';
-import { MOCK_PRODUCTS } from '@/data/products';
+import { getProductsByCategory } from '@/app/admin/products/actions'; // Updated import
 import type { Product } from '@/lib/types';
 import { CATEGORIES } from '@/lib/constants';
 import { notFound } from 'next/navigation';
@@ -12,10 +12,7 @@ interface CategoryPageProps {
   };
 }
 
-// Simulate fetching products by category (replace with actual data fetching later)
-async function getProductsByCategory(categorySlug: string): Promise<Product[]> {
-  return MOCK_PRODUCTS.filter(product => product.categorySlug === categorySlug);
-}
+// getProductsByCategory is already an async function from actions.ts
 
 async function getCategoryName(categorySlug: string): Promise<string | undefined> {
   const category = CATEGORIES.find(cat => cat.slug === categorySlug);
@@ -24,7 +21,7 @@ async function getCategoryName(categorySlug: string): Promise<string | undefined
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
   const { slug } = params;
-  const products = await getProductsByCategory(slug);
+  const products = await getProductsByCategory(slug); // Use the server action
   const categoryName = await getCategoryName(slug);
 
   if (!categoryName) {

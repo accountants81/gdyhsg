@@ -4,20 +4,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { PlusCircle } from "lucide-react";
 import Link from "next/link";
 import ProductListClient from "./components/ProductListClient";
-import { MOCK_PRODUCTS } from '@/data/products'; // Temporary mock data
+import { getAllProducts } from './actions'; // Use the centralized action
 import type { Product } from '@/lib/types';
-
-// Simulate fetching products for admin (replace with actual data fetching)
-async function getAdminProducts(): Promise<Product[]> {
-  // In a real app, fetch from DB.
-  // For now, we return a mutable copy if we were to modify it with server actions.
-  // Since ProductListClient will handle actions, this can be a direct import for now.
-  return Promise.resolve([...MOCK_PRODUCTS]);
-}
 
 
 export default async function AdminProductsPage() {
-  const initialProducts = await getAdminProducts();
+  const initialProducts = await getAllProducts(); // Use the action
 
   return (
     <div className="space-y-6">

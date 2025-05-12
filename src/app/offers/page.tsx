@@ -1,14 +1,12 @@
 
 import MainLayout from '@/components/layout/MainLayout';
 import OffersSection from '@/components/offers/OffersSection';
-import { MOCK_OFFERS } from '@/lib/constants'; // Using MOCK_OFFERS, can be replaced with getAllOffers from actions
 import type { Offer } from '@/lib/types';
-// import { getAllOffers } from '@/app/admin/offers/actions'; // Alternative if you want to use the action
+import { getAllOffers } from '@/app/admin/offers/actions'; // Use the server action
 
-// Simulate fetching offers
+// Fetch offers using the server action
 async function getOffers(): Promise<Offer[]> {
-  // return getAllOffers(); // Option 1: Use the server action if it's suitable for public facing page
-  return Promise.resolve(MOCK_OFFERS); // Option 2: Use MOCK_OFFERS for simplicity
+  return getAllOffers(); 
 }
 
 export default async function OffersPage() {
