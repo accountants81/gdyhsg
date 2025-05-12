@@ -9,8 +9,8 @@ body {
 
 @layer base {
   :root {
-    --background: 220 20% 10%; /* Dark Slate Blue (new default) */
-    --foreground: 220 10% 90%; /* Light Grayish Blue */
+    --background: 220 20% 10%; /* Dark Slate Blue (Kept from previous) */
+    --foreground: 220 10% 90%; /* Light Grayish Blue (Kept from previous) */
 
     --card: 220 20% 13%;
     --card-foreground: 220 10% 90%;
@@ -18,48 +18,45 @@ body {
     --popover: 220 20% 10%;
     --popover-foreground: 220 10% 90%;
 
-    --primary: 200 80% 55%; /* Bright Cyan */
-    --primary-foreground: 220 20% 5%; /* Very Dark Blue for text on primary */
+    --primary: 40 90% 55%; /* Gold/Amber */
+    --primary-foreground: 40 90% 10%; /* Dark Brown/Black for text on primary */
 
-    --secondary: 220 20% 20%; /* Darker Slate Blue */
-    --secondary-foreground: 220 10% 85%; /* Lighter text on secondary */
+    --secondary: 220 20% 20%; /* Darker Slate Blue (Kept from previous) */
+    --secondary-foreground: 220 10% 85%; /* Lighter text on secondary (Kept from previous) */
 
-    --muted: 220 20% 18%; /* Muted Dark Slate Blue */
-    --muted-foreground: 220 10% 65%;
+    --muted: 220 20% 18%; /* Muted Dark Slate Blue (Kept from previous) */
+    --muted-foreground: 220 10% 65%; /* (Kept from previous) */
 
-    --accent: 45 90% 55%; /* Vibrant Yellow/Gold */
-    --accent-foreground: 220 20% 10%; /* Dark text on accent */
+    --accent: 35 95% 60%; /* Slightly brighter Gold/Amber for accent */
+    --accent-foreground: 35 95% 10%; /* Dark Brown/Black text on accent */
 
-    --destructive: 0 70% 50%; /* Red */
-    --destructive-foreground: 0 0% 98%; /* White/Very Light */
+    --destructive: 0 70% 50%; /* Red (Kept from previous) */
+    --destructive-foreground: 0 0% 98%; /* White/Very Light (Kept from previous) */
 
     --border: 220 20% 22%;
-    --input: 220 20% 16%; /* This is border-input for shadcn. Input components use bg-background for background. */
-    --ring: 200 80% 60%; /* Brighter Cyan for focus rings */
+    --input: 220 20% 16%; 
+    --ring: 40 90% 60%; /* Brighter Gold/Amber for focus rings */
 
     --radius: 0.5rem;
 
-    /* Sidebar specific colors for the new dark default theme */
-    --sidebar-background: hsla(220, 20%, 11%, 0.9); /* Semi-transparent dark slate blue */
+    /* Sidebar specific colors - adapt to new primary/accent if needed, or keep consistent with overall theme */
+    --sidebar-background: hsla(220, 20%, 11%, 0.9); 
     --sidebar-foreground: 220 10% 85%;
     --sidebar-primary: hsl(var(--primary)); 
     --sidebar-primary-foreground: hsl(var(--primary-foreground)); 
-    --sidebar-accent: 220 20% 18%; /* For hover/active items */
-    --sidebar-accent-foreground: hsl(var(--primary)); /* Bright Cyan text on accent */
+    --sidebar-accent: 220 20% 18%; 
+    --sidebar-accent-foreground: hsl(var(--primary)); 
     --sidebar-border: 220 20% 25%;
     --sidebar-ring: hsl(var(--ring)); 
 
-    /* Chart colors */
-    --chart-1: 200 70% 55%; 
-    --chart-2: 45 90% 55%;
-    --chart-3: 280 60% 60%; /* Purple */
-    --chart-4: 130 60% 55%; /* Green */
-    --chart-5: 0 70% 60%; /* Reddish-Orange */
+    /* Chart colors - adjusted to fit the new theme */
+    --chart-1: hsl(var(--primary)); /* Gold */
+    --chart-2: 200 70% 55%;  /* Cyan (as a contrasting color) */
+    --chart-3: 280 60% 60%; /* Purple (Kept) */
+    --chart-4: 130 60% 55%; /* Green (Kept) */
+    --chart-5: 0 70% 60%; /* Reddish-Orange (Kept) */
   }
 
-  /* The .dark class block is removed as :root now defines the dark theme. 
-     If an alternative light theme is needed later, it can be added here.
-   */
 }
 
 @layer base {
