@@ -9,8 +9,8 @@ body {
 
 @layer base {
   :root {
-    --background-hsl: 220 15% 5%; /* HSL values for background */
-    --background: hsl(var(--background-hsl)); /* Very Dark Desaturated Blue/Almost Black */
+    --background-hsl: 220 15% 5%; /* Very Dark Desaturated Blue/Almost Black */
+    --background: hsl(var(--background-hsl)); 
     --foreground: 220 10% 90%; /* Light Grayish Blue */
 
     --card-hsl: 220 15% 8%;
@@ -21,9 +21,9 @@ body {
     --popover: hsl(var(--popover-hsl));
     --popover-foreground: hsl(var(--foreground));
 
-    --primary-hsl: 40 90% 55%;
-    --primary: hsl(var(--primary-hsl)); /* Gold/Amber */
-    --primary-foreground: 40 90% 10%; /* Dark Brown/Black for text on primary */
+    --primary-hsl: 38 92% 50%; /* Richer Gold */
+    --primary: hsl(var(--primary-hsl)); 
+    --primary-foreground: 38 92% 10%; /* Darker Brown/Black for text on primary */
 
     --secondary-hsl: 220 15% 15%;
     --secondary: hsl(var(--secondary-hsl)); /* Darker, less saturated blue */
@@ -33,9 +33,9 @@ body {
     --muted: hsl(var(--muted-hsl)); 
     --muted-foreground: 220 10% 65%; 
 
-    --accent-hsl: 35 95% 60%;
-    --accent: hsl(var(--accent-hsl)); /* Slightly brighter Gold/Amber for accent */
-    --accent-foreground: 35 95% 10%; /* Dark Brown/Black text on accent */
+    --accent-hsl: 38 95% 55%; /* Coordinated Richer Gold Accent */
+    --accent: hsl(var(--accent-hsl)); 
+    --accent-foreground: 38 95% 10%; /* Darker Brown/Black text on accent */
 
     --destructive-hsl: 0 70% 50%;
     --destructive: hsl(var(--destructive-hsl)); /* Red */
@@ -45,8 +45,8 @@ body {
     --border: hsl(var(--border-hsl));
     --input-hsl: 220 15% 10%;
     --input: hsl(var(--input-hsl)); 
-    --ring-hsl: 40 90% 60%;
-    --ring: hsl(var(--ring-hsl)); /* Brighter Gold/Amber for focus rings */
+    --ring-hsl: 38 92% 55%; /* Coordinated Richer Gold for focus rings */
+    --ring: hsl(var(--ring-hsl)); 
 
     --radius: 0.5rem;
 
@@ -95,3 +95,4 @@ body {
   max-width: 100vw; /* Ensure body does not exceed viewport width */
   min-height: 100vh;
 }
+
