@@ -23,12 +23,12 @@ export default async function HomePage() {
         {/* Enhanced Hero Section */}
         <section className="relative bg-card text-foreground p-8 md:p-12 rounded-lg shadow-xl my-8 overflow-hidden min-h-[350px] md:min-h-[450px] flex flex-col justify-center items-center text-center">
           <Image
-            src="https://picsum.photos/seed/luxury-tech-banner/1200/600" 
-            alt="Promotional Banner - Luxurious Tech Accessories"
+            src="https://picsum.photos/seed/mobile-accessories-banner/1200/600" 
+            alt="Promotional Banner - Mobile Cases, Headphones, and Accessories"
             fill
             className="object-cover opacity-15" 
             priority 
-            data-ai-hint="luxury tech"
+            data-ai-hint="mobile accessories"
           />
           <div className="relative z-10">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-primary animate-fade-in-down">
