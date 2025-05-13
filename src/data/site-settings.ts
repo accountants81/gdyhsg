@@ -6,9 +6,9 @@ export let MOCK_SITE_SETTINGS: SiteSettings = {
   siteName: SITE_NAME,
   facebookUrl: 'https://facebook.com/yourpage',
   instagramUrl: 'https://instagram.com/yourprofile',
-  whatsappNumber: '+201234567890', // Example WhatsApp number, ensure it's correctly formatted for wa.me link
-  phoneNumber: '+201002003000',
-  email: 'info@aaamo.com',
+  whatsappNumber: '+201050543116', // Example WhatsApp number, ensure it's correctly formatted for wa.me link
+  phoneNumber: '+201050543116',
+  email: 'searchemail85@gmail.com',
 };
 
 // Function to update settings in-memory (for demo purposes)
