@@ -9,12 +9,13 @@ import { cn } from '@/lib/utils';
 
 interface MainLayoutProps {
   children: React.ReactNode;
+  className?: string; // Added optional className prop
 }
 
-export default function MainLayout({ children }: MainLayoutProps) {
+export default function MainLayout({ children, className }: MainLayoutProps) {
   return (
     <SidebarProvider defaultOpen={false}>
-      <div className="flex flex-col min-h-screen w-full max-w-full overflow-x-hidden">
+      <div className="flex flex-col min-h-screen w-full max-w-full overflow-x-hidden bg-background text-foreground">
         <Header />
         <div className="flex flex-1 w-full">
           <main
@@ -22,12 +23,15 @@ export default function MainLayout({ children }: MainLayoutProps) {
               "flex-1 py-8 px-4 w-full",
               "md:pe-[var(--sidebar-width-icon)]",
               "group-data-[state=expanded]/sidebar-wrapper:md:pe-[var(--sidebar-width)]",
-              "transition-[padding-left] duration-300 ease-in-out"
+              "transition-[padding-left] duration-300 ease-in-out",
+              className // Added custom className merging
             )}
+            id="main-content" // Added for accessibility
+            aria-live="polite" // Added for screen readers
           >
             {children}
           </main>
-          <CategorySidebar />
+          <CategorySidebar aria-label="Category navigation" /> {/* Added accessibility label */}
         </div>
         <Footer />
       </div>
