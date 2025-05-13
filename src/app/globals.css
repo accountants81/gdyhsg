@@ -1,140 +1,138 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body {
-  font-family: "Tajawal", "Noto Sans Arabic", Arial, Helvetica, sans-serif; /* Added Arabic friendly fonts */
+  font-family: "Tajawal", "Noto Sans Arabic", Arial, Helvetica, sans-serif;
 }
 
 @layer base {
   :root {
-    --background-hsl: 240 10% 3.9%; /* Blackish */
+    --background-hsl: 0 0% 0%; /* أسود تماماً */
     --background: hsl(var(--background-hsl));
-    --foreground-hsl: 0 0% 98%;   /* Whitish */
+    --foreground-hsl: 0 100% 50%; /* أحمر ناصع */
     --foreground: hsl(var(--foreground-hsl));
 
-    --card-hsl: 240 4.8% 9.8%;      /* Very dark gray for cards */
+    --card-hsl: 0 0% 5%; /* أسود داكن جداً لبطاقات */
     --card: hsl(var(--card-hsl));
-    --card-foreground: hsl(var(--foreground-hsl));
+    --card-foreground: hsl(0 100% 60%);
 
-    --popover-hsl: 240 4.8% 9.8%;   /* Very dark gray for popovers */
+    --popover-hsl: 0 0% 5%; /* أسود داكن جداً للنوافذ المنبثقة */
     --popover: hsl(var(--popover-hsl));
-    --popover-foreground: hsl(var(--foreground-hsl));
+    --popover-foreground: hsl(0 100% 60%);
 
-    --primary-hsl: 45 90% 55%;      /* Rich Gold/Amber */
+    --primary-hsl: 0 100% 50%; /* أحمر ناصع */
     --primary: hsl(var(--primary-hsl));
-    --primary-foreground-hsl: 45 90% 10%; /* Very Dark Brown/Black for text on primary */
+    --primary-foreground-hsl: 0 0% 0%; /* أسود للنص على الأحمر */
     --primary-foreground: hsl(var(--primary-foreground-hsl));
 
-    --secondary-hsl: 240 3.7% 15.9%; /* Dark gray for secondary elements */
+    --secondary-hsl: 0 0% 10%; /* رمادي داكن جداً للعناصر الثانوية */
     --secondary: hsl(var(--secondary-hsl));
-    --secondary-foreground-hsl: 0 0% 98%; /* White text on secondary */
+    --secondary-foreground-hsl: 0 100% 60%; /* أحمر فاتح للنص الثانوي */
     --secondary-foreground: hsl(var(--secondary-foreground-hsl));
 
-    --muted-hsl: 240 3.7% 15.9%;   /* Dark gray for muted elements */
+    --muted-hsl: 0 0% 15%; /* رمادي داكن للعناصر الهادئة */
     --muted: hsl(var(--muted-hsl));
-    --muted-foreground-hsl: 240 5% 64.9%; /* Lighter gray text for muted */
+    --muted-foreground-hsl: 0 80% 40%; /* أحمر داكن للنص الهادئ */
     --muted-foreground: hsl(var(--muted-foreground-hsl));
 
-    --accent-hsl: 45 90% 55%;  /* Rich Gold/Amber (same as primary) */
+    --accent-hsl: 0 100% 50%; /* أحمر ناصع (مثل الأساسي) */
     --accent: hsl(var(--accent-hsl));
-    --accent-foreground-hsl: 45 90% 10%; /* Very Dark Brown/Black for text on accent */
+    --accent-foreground-hsl: 0 0% 0%; /* أسود للنص على الأحمر */
     --accent-foreground: hsl(var(--accent-foreground-hsl));
 
-    --destructive-hsl: 0 70% 45%; /* Rich Deep Red */
+    --destructive-hsl: 0 100% 30%; /* أحمر داكن للتدميري */
     --destructive: hsl(var(--destructive-hsl));
-    --destructive-foreground-hsl: 0 0% 95%; /* Light text on destructive */
+    --destructive-foreground-hsl: 0 0% 100%; /* أبيض للنص على التدميري */
     --destructive-foreground: hsl(var(--destructive-foreground-hsl));
 
-    --border-hsl: 240 3.7% 15.9%; /* Dark Gray for borders */
+    --border-hsl: 0 0% 20%; /* رمادي داكن للحدود */
     --border: hsl(var(--border-hsl));
-    --input-hsl: 240 3.7% 15.9%;  /* Dark Gray for input backgrounds */
+    --input-hsl: 0 0% 15%; /* رمادي داكن لخلفيات الإدخال */
     --input: hsl(var(--input-hsl));
-    --ring-hsl: 45 80% 65%;    /* Brighter Gold for focus rings */
+    --ring-hsl: 0 100% 60%; /* أحمر فاتح لحلقات التركيز */
     --ring: hsl(var(--ring-hsl));
 
     --radius: 0.5rem;
 
-    /* Sidebar specific colors - Opaque Gold Theme (Remains unchanged and non-transparent) */
-    --sidebar-background-hsl: var(--primary-hsl); /* Rich Gold/Amber */
+    /* ألوان الشريط الجانبي - أحمر/أسود */
+    --sidebar-background-hsl: 0 0% 0%; /* أسود */
     --sidebar-background: hsl(var(--sidebar-background-hsl)); 
-    --sidebar-foreground-hsl: var(--primary-foreground-hsl); /* Very Dark Brown/Black */
+    --sidebar-foreground-hsl: 0 100% 50%; /* أحمر */
     --sidebar-foreground: hsl(var(--sidebar-foreground-hsl));
 
-    /* Active item styles */
-    --sidebar-primary-hsl: var(--primary-foreground-hsl); /* Dark Brown/Black background for active item */
+    /* أنماط العنصر النشط */
+    --sidebar-primary-hsl: 0 100% 50%; /* أحمر خلفية للعنصر النشط */
     --sidebar-primary: hsl(var(--sidebar-primary-hsl));
-    --sidebar-primary-foreground-hsl: var(--primary-hsl); /* Gold text for active item */
+    --sidebar-primary-foreground-hsl: 0 0% 0%; /* أسود نص للعنصر النشط */
     --sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground-hsl));
 
-    /* Hover item styles */
-    --sidebar-accent-hsl: 45 90% 60%; /* Lighter Gold for hover background */
+    /* أنماط العنصر عند التحويم */
+    --sidebar-accent-hsl: 0 100% 40%; /* أحمر داكن للتحويم */
     --sidebar-accent: hsl(var(--sidebar-accent-hsl));
-    --sidebar-accent-foreground-hsl: var(--primary-foreground-hsl); /* Dark Brown/Black text for hover */
+    --sidebar-accent-foreground-hsl: 0 0% 100%; /* أبيض نص للتحويم */
     --sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground-hsl));
 
-    --sidebar-border-hsl: 45 80% 40%; /* Darker Gold for border */
-    --sidebar-border: hsl(var(--sidebar-border-hsl));
-    --sidebar-ring: hsl(var(--ring-hsl)); /* Standard ring color */
-
-
-    /* Chart colors */
-    --chart-1: hsl(var(--primary-hsl)); /* Gold */
-    --chart-2: hsl(200 80% 60%); /* Bright Blue */
-    --chart-3: hsl(140 70% 50%); /* Green */
-    --chart-4: hsl(280 70% 60%); /* Purple */
-    --chart-5: hsl(var(--muted-foreground-hsl)); /* Muted Gray */
-  }
-
-  .dark {
-    /* Dark theme inherits the root settings as it's primarily a dark theme */
-    --background-hsl: 240 10% 3.9%;
-    --foreground-hsl: 0 0% 98%;
-    --card-hsl: 240 4.8% 9.8%;
-    --card-foreground: hsl(var(--foreground-hsl));
-    --popover-hsl: 240 4.8% 9.8%;
-    --popover-foreground: hsl(var(--foreground-hsl));
-    --primary-hsl: 45 90% 55%;
-    --primary-foreground-hsl: 45 90% 10%;
-    --secondary-hsl: 240 3.7% 15.9%;
-    --secondary-foreground-hsl: 0 0% 98%;
-    --muted-hsl: 240 3.7% 15.9%;
-    --muted-foreground-hsl: 240 5% 64.9%;
-    --accent-hsl: 45 90% 55%;
-    --accent-foreground-hsl: 45 90% 10%;
-    --destructive-hsl: 0 70% 45%;
-    --destructive-foreground-hsl: 0 0% 95%;
-    --border-hsl: 240 3.7% 15.9%;
-    --input-hsl: 240 3.7% 15.9%;
-    --ring-hsl: 45 80% 65%;
-
-    /* Sidebar specific colors for dark - Opaque Gold Theme (same as root for consistency) */
-    --sidebar-background-hsl: var(--primary-hsl);
-    --sidebar-background: hsl(var(--sidebar-background-hsl));
-    --sidebar-foreground-hsl: var(--primary-foreground-hsl);
-    --sidebar-foreground: hsl(var(--sidebar-foreground-hsl));
-    
-    --sidebar-primary-hsl: var(--primary-foreground-hsl);
-    --sidebar-primary: hsl(var(--sidebar-primary-hsl));
-    --sidebar-primary-foreground-hsl: var(--primary-hsl);
-    --sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground-hsl));
-
-    --sidebar-accent-hsl: 45 90% 60%;
-    --sidebar-accent: hsl(var(--sidebar-accent-hsl));
-    --sidebar-accent-foreground-hsl: var(--primary-foreground-hsl);
-    --sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground-hsl));
-
-    --sidebar-border-hsl: 45 80% 40%;
+    --sidebar-border-hsl: 0 100% 30%; /* أحمر داكن للحدود */
     --sidebar-border: hsl(var(--sidebar-border-hsl));
     --sidebar-ring: hsl(var(--ring-hsl));
 
-    /* Chart colors */
-    --chart-1: hsl(var(--primary-hsl));
-    --chart-2: hsl(200 80% 60%);
-    --chart-3: hsl(140 70% 50%);
-    --chart-4: hsl(280 70% 60%);
-    --chart-5: hsl(var(--muted-foreground-hsl));
+    /* ألوان الرسوم البيانية */
+    --chart-1: hsl(0 100% 50%); /* أحمر */
+    --chart-2: hsl(0 80% 60%); /* أحمر فاتح */
+    --chart-3: hsl(0 60% 40%); /* أحمر داكن */
+    --chart-4: hsl(0 100% 30%); /* أحمر غامق */
+    --chart-5: hsl(0 0% 50%); /* رمادي */
+  }
+
+  .dark {
+    /* النسخة الداكنة (تستخدم نفس إعدادات الجذر) */
+    --background-hsl: 0 0% 0%;
+    --foreground-hsl: 0 100% 50%;
+    --card-hsl: 0 0% 5%;
+    --card-foreground: hsl(0 100% 60%);
+    --popover-hsl: 0 0% 5%;
+    --popover-foreground: hsl(0 100% 60%);
+    --primary-hsl: 0 100% 50%;
+    --primary-foreground-hsl: 0 0% 0%;
+    --secondary-hsl: 0 0% 10%;
+    --secondary-foreground-hsl: 0 100% 60%;
+    --muted-hsl: 0 0% 15%;
+    --muted-foreground-hsl: 0 80% 40%;
+    --accent-hsl: 0 100% 50%;
+    --accent-foreground-hsl: 0 0% 0%;
+    --destructive-hsl: 0 100% 30%;
+    --destructive-foreground-hsl: 0 0% 100%;
+    --border-hsl: 0 0% 20%;
+    --input-hsl: 0 0% 15%;
+    --ring-hsl: 0 100% 60%;
+
+    /* ألوان الشريط الجانبي للوضع الداكن */
+    --sidebar-background-hsl: 0 0% 0%;
+    --sidebar-background: hsl(var(--sidebar-background-hsl));
+    --sidebar-foreground-hsl: 0 100% 50%;
+    --sidebar-foreground: hsl(var(--sidebar-foreground-hsl));
+    
+    --sidebar-primary-hsl: 0 100% 50%;
+    --sidebar-primary: hsl(var(--sidebar-primary-hsl));
+    --sidebar-primary-foreground-hsl: 0 0% 0%;
+    --sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground-hsl));
+
+    --sidebar-accent-hsl: 0 100% 40%;
+    --sidebar-accent: hsl(var(--sidebar-accent-hsl));
+    --sidebar-accent-foreground-hsl: 0 0% 100%;
+    --sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground-hsl));
+
+    --sidebar-border-hsl: 0 100% 30%;
+    --sidebar-border: hsl(var(--sidebar-border-hsl));
+    --sidebar-ring: hsl(var(--ring-hsl));
+
+    /* ألوان الرسوم البيانية للوضع الداكن */
+    --chart-1: hsl(0 100% 50%);
+    --chart-2: hsl(0 80% 60%);
+    --chart-3: hsl(0 60% 40%);
+    --chart-4: hsl(0 100% 30%);
+    --chart-5: hsl(0 0% 50%);
   }
 }
 
@@ -148,7 +146,7 @@ body {
 }
 
 html {
-  overflow-x: hidden; /* Prevent horizontal scroll globally */
+  overflow-x: hidden;
   box-sizing: border-box;
 }
 *, *:before, *:after {
@@ -156,8 +154,7 @@ html {
 }
 
 body {
-  overflow-x: hidden; /* Prevent horizontal scroll globally */
-  max-width: 100vw; /* Ensure body does not exceed viewport width */
+  overflow-x: hidden;
+  max-width: 100vw;
   min-height: 100vh;
 }
-
