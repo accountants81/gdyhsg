@@ -49,7 +49,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
   return (
     <SidebarProvider defaultOpen={true}> {/* Admin sidebar usually default open on desktop */}
-        <div className="flex min-h-screen w-full flex-col bg-muted/40 max-w-full overflow-x-hidden"> {/* Ensure full width and prevent overflow */}
+        <div className="flex min-h-screen w-full flex-col bg-background max-w-full overflow-x-hidden"> {/* Ensure full width and prevent overflow, changed bg-muted/40 to bg-background */}
             <AdminSidebar />
             {/*
               AdminSidebar uses side="right". In RTL, this is positioned on the left (right:0 CSS).
