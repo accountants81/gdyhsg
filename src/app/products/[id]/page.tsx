@@ -4,8 +4,26 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Card, CardHeader, CardContent, CardTitle, CardFooter } from '@/components/ui/card';
 import MainLayout from '@/layouts/MainLayout';
+import SmartRecommendationsLoader from '@/components/SmartRecommendationsLoader'; // يجب استيراده
 
-const ProductPage = ({ product, relatedProducts }) => {
+interface Product {
+  id: string;
+  name: string;
+  imageUrls: string[];
+  brand?: string;
+  originalPrice: number;
+  price: number;
+  discountPercentage: number;
+  rating: number;
+  inStock?: boolean;
+}
+
+interface ProductPageProps {
+  product: Product;
+  relatedProducts: Product[];
+}
+
+const ProductPage = ({ product, relatedProducts }: ProductPageProps) => {
   return (
     <MainLayout>
       <div className="container mx-auto px-4 py-8">
@@ -48,7 +66,8 @@ const ProductPage = ({ product, relatedProducts }) => {
                             placeholder="blur"
                             blurDataURL="data:image/svg+xml;base64,..."
                             onError={(e) => {
-                              e.currentTarget.src = '/images/placeholder-product.jpg';
+                              const target = e.target as HTMLImageElement;
+                              target.src = '/images/placeholder-product.jpg';
                             }}
                           />
                           {relatedProduct.discountPercentage > 0 && (
@@ -113,7 +132,7 @@ const ProductPage = ({ product, relatedProducts }) => {
                           </span>
                         </div>
                       ) : (
-                        <div className="h-4"></div> {/* Spacer for consistent layout */}
+                        <div className="h-4"></div>
                       )}
                       
                       {relatedProduct.inStock !== undefined && (
