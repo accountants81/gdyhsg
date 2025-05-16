@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils';
 
 interface MainLayoutProps {
   children: React.ReactNode;
-  className?: string; // Added optional className prop
+  className?: string;
 }
 
 export default function MainLayout({ children, className }: MainLayoutProps) {
@@ -18,20 +18,20 @@ export default function MainLayout({ children, className }: MainLayoutProps) {
       <div className="flex flex-col min-h-screen w-full max-w-full overflow-x-hidden bg-background text-foreground">
         <Header />
         <div className="flex flex-1 w-full">
+          <CategorySidebar aria-label="Category navigation" />
           <main
             className={cn(
-              "flex-1 py-8 px-4 w-full",
-              "md:pe-[var(--sidebar-width-icon)]",
-              "group-data-[state=expanded]/sidebar-wrapper:md:pe-[var(--sidebar-width)]",
-              "transition-[padding-left] duration-300 ease-in-out",
-              className // Added custom className merging
+              "flex-1 w-full py-8 px-4",
+              "md:pl-[var(--sidebar-width-icon)]",
+              "group-data-[state=expanded]/sidebar-wrapper:md:pl-[var(--sidebar-width)]",
+              "transition-[padding] duration-300 ease-in-out",
+              className
             )}
-            id="main-content" // Added for accessibility
-            aria-live="polite" // Added for screen readers
+            id="main-content"
+            aria-live="polite"
           >
             {children}
           </main>
-          <CategorySidebar aria-label="Category navigation" /> {/* Added accessibility label */}
         </div>
         <Footer />
       </div>
