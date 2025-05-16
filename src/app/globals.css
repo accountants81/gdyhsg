@@ -2,154 +2,91 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  font-family: "Tajawal", "Noto Sans Arabic", Arial, Helvetica, sans-serif;
+/* تعريف الخطوط - تأكد من استيرادها بشكل صحيح */
+@font-face {
+  font-family: 'Tajawal';
+  src: url('/fonts/Tajawal-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
 }
 
+@font-face {
+  font-family: 'Noto Sans Arabic';
+  src: url('/fonts/NotoSansArabic-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+
+/* إعدادات الطبقة الأساسية */
 @layer base {
   :root {
-    --background-hsl: 0 0% 0%; /* أسود تماماً */
-    --background: hsl(var(--background-hsl));
-    --foreground-hsl: 0 100% 50%; /* أحمر ناصع */
-    --foreground: hsl(var(--foreground-hsl));
-
-    --card-hsl: 0 0% 5%; /* أسود داكن جداً لبطاقات */
-    --card: hsl(var(--card-hsl));
-    --card-foreground: hsl(0 100% 60%);
-
-    --popover-hsl: 0 0% 5%; /* أسود داكن جداً للنوافذ المنبثقة */
-    --popover: hsl(var(--popover-hsl));
-    --popover-foreground: hsl(0 100% 60%);
-
-    --primary-hsl: 0 100% 50%; /* أحمر ناصع */
-    --primary: hsl(var(--primary-hsl));
-    --primary-foreground-hsl: 0 0% 0%; /* أسود للنص على الأحمر */
-    --primary-foreground: hsl(var(--primary-foreground-hsl));
-
-    --secondary-hsl: 0 0% 10%; /* رمادي داكن جداً للعناصر الثانوية */
-    --secondary: hsl(var(--secondary-hsl));
-    --secondary-foreground-hsl: 0 100% 60%; /* أحمر فاتح للنص الثانوي */
-    --secondary-foreground: hsl(var(--secondary-foreground-hsl));
-
-    --muted-hsl: 0 0% 15%; /* رمادي داكن للعناصر الهادئة */
-    --muted: hsl(var(--muted-hsl));
-    --muted-foreground-hsl: 0 80% 40%; /* أحمر داكن للنص الهادئ */
-    --muted-foreground: hsl(var(--muted-foreground-hsl));
-
-    --accent-hsl: 0 100% 50%; /* أحمر ناصع (مثل الأساسي) */
-    --accent: hsl(var(--accent-hsl));
-    --accent-foreground-hsl: 0 0% 0%; /* أسود للنص على الأحمر */
-    --accent-foreground: hsl(var(--accent-foreground-hsl));
-
-    --destructive-hsl: 0 100% 30%; /* أحمر داكن للتدميري */
-    --destructive: hsl(var(--destructive-hsl));
-    --destructive-foreground-hsl: 0 0% 100%; /* أبيض للنص على التدميري */
-    --destructive-foreground: hsl(var(--destructive-foreground-hsl));
-
-    --border-hsl: 0 0% 20%; /* رمادي داكن للحدود */
-    --border: hsl(var(--border-hsl));
-    --input-hsl: 0 0% 15%; /* رمادي داكن لخلفيات الإدخال */
-    --input: hsl(var(--input-hsl));
-    --ring-hsl: 0 100% 60%; /* أحمر فاتح لحلقات التركيز */
-    --ring: hsl(var(--ring-hsl));
-
-    --radius: 0.5rem;
-
-    /* ألوان الشريط الجانبي - أحمر/أسود */
-    --sidebar-background-hsl: 0 0% 0%; /* أسود */
-    --sidebar-background: hsl(var(--sidebar-background-hsl)); 
-    --sidebar-foreground-hsl: 0 100% 50%; /* أحمر */
-    --sidebar-foreground: hsl(var(--sidebar-foreground-hsl));
-
-    /* أنماط العنصر النشط */
-    --sidebar-primary-hsl: 0 100% 50%; /* أحمر خلفية للعنصر النشط */
-    --sidebar-primary: hsl(var(--sidebar-primary-hsl));
-    --sidebar-primary-foreground-hsl: 0 0% 0%; /* أسود نص للعنصر النشط */
-    --sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground-hsl));
-
-    /* أنماط العنصر عند التحويم */
-    --sidebar-accent-hsl: 0 100% 40%; /* أحمر داكن للتحويم */
-    --sidebar-accent: hsl(var(--sidebar-accent-hsl));
-    --sidebar-accent-foreground-hsl: 0 0% 100%; /* أبيض نص للتحويم */
-    --sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground-hsl));
-
-    --sidebar-border-hsl: 0 100% 30%; /* أحمر داكن للحدود */
-    --sidebar-border: hsl(var(--sidebar-border-hsl));
-    --sidebar-ring: hsl(var(--ring-hsl));
-
-    /* ألوان الرسوم البيانية */
-    --chart-1: hsl(0 100% 50%); /* أحمر */
-    --chart-2: hsl(0 80% 60%); /* أحمر فاتح */
-    --chart-3: hsl(0 60% 40%); /* أحمر داكن */
-    --chart-4: hsl(0 100% 30%); /* أحمر غامق */
-    --chart-5: hsl(0 0% 50%); /* رمادي */
-  }
-
-  .dark {
-    /* النسخة الداكنة (تستخدم نفس إعدادات الجذر) */
-    --background-hsl: 0 0% 0%;
-    --foreground-hsl: 0 100% 50%;
-    --card-hsl: 0 0% 5%;
-    --card-foreground: hsl(0 100% 60%);
-    --popover-hsl: 0 0% 5%;
-    --popover-foreground: hsl(0 100% 60%);
-    --primary-hsl: 0 100% 50%;
-    --primary-foreground-hsl: 0 0% 0%;
-    --secondary-hsl: 0 0% 10%;
-    --secondary-foreground-hsl: 0 100% 60%;
-    --muted-hsl: 0 0% 15%;
-    --muted-foreground-hsl: 0 80% 40%;
-    --accent-hsl: 0 100% 50%;
-    --accent-foreground-hsl: 0 0% 0%;
-    --destructive-hsl: 0 100% 30%;
-    --destructive-foreground-hsl: 0 0% 100%;
-    --border-hsl: 0 0% 20%;
-    --input-hsl: 0 0% 15%;
-    --ring-hsl: 0 100% 60%;
-
-    /* ألوان الشريط الجانبي للوضع الداكن */
-    --sidebar-background-hsl: 0 0% 0%;
-    --sidebar-background: hsl(var(--sidebar-background-hsl));
-    --sidebar-foreground-hsl: 0 100% 50%;
-    --sidebar-foreground: hsl(var(--sidebar-foreground-hsl));
+    /* الألوان الأساسية */
+    --background: 0 0% 0%; /* أسود */
+    --foreground: 0 100% 50%; /* أحمر */
     
-    --sidebar-primary-hsl: 0 100% 50%;
-    --sidebar-primary: hsl(var(--sidebar-primary-hsl));
-    --sidebar-primary-foreground-hsl: 0 0% 0%;
-    --sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground-hsl));
-
-    --sidebar-accent-hsl: 0 100% 40%;
-    --sidebar-accent: hsl(var(--sidebar-accent-hsl));
-    --sidebar-accent-foreground-hsl: 0 0% 100%;
-    --sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground-hsl));
-
-    --sidebar-border-hsl: 0 100% 30%;
-    --sidebar-border: hsl(var(--sidebar-border-hsl));
-    --sidebar-ring: hsl(var(--ring-hsl));
-
-    /* ألوان الرسوم البيانية للوضع الداكن */
-    --chart-1: hsl(0 100% 50%);
-    --chart-2: hsl(0 80% 60%);
-    --chart-3: hsl(0 60% 40%);
-    --chart-4: hsl(0 100% 30%);
-    --chart-5: hsl(0 0% 50%);
+    --card: 0 0% 5%;
+    --card-foreground: 0 100% 60%;
+    
+    --popover: 0 0% 5%;
+    --popover-foreground: 0 100% 60%;
+    
+    --primary: 0 100% 50%;
+    --primary-foreground: 0 0% 0%;
+    
+    --secondary: 0 0% 10%;
+    --secondary-foreground: 0 100% 60%;
+    
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 80% 40%;
+    
+    --accent: 0 100% 50%;
+    --accent-foreground: 0 0% 0%;
+    
+    --destructive: 0 100% 30%;
+    --destructive-foreground: 0 0% 100%;
+    
+    --border: 0 0% 20%;
+    --input: 0 0% 15%;
+    --ring: 0 100% 60%;
+    
+    --radius: 0.5rem;
+    
+    /* ألوان الشريط الجانبي */
+    --sidebar-background: 0 0% 0%;
+    --sidebar-foreground: 0 100% 50%;
+    --sidebar-primary: 0 100% 50%;
+    --sidebar-primary-foreground: 0 0% 0%;
+    --sidebar-accent: 0 100% 40%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 0 100% 30%;
+    
+    /* ألوان الرسوم البيانية */
+    --chart-1: 0 100% 50%;
+    --chart-2: 0 80% 60%;
+    --chart-3: 0 60% 40%;
+    --chart-4: 0 100% 30%;
+    --chart-5: 0 0% 50%;
   }
-}
 
-@layer base {
+  /* يمكنك إضافة .dark هنا إذا كنت تريد إعدادات مختلفة للوضع الداكن */
+  
   * {
     @apply border-border;
   }
+  
   body {
     @apply bg-background text-foreground;
+    font-family: "Tajawal", "Noto Sans Arabic", Arial, Helvetica, sans-serif;
   }
 }
 
+/* إعدادات عامة للصفحة */
 html {
   overflow-x: hidden;
   box-sizing: border-box;
 }
-*, *:before, *:after {
+
+*, *::before, *::after {
   box-sizing: inherit;
 }
 
@@ -157,4 +94,6 @@ body {
   overflow-x: hidden;
   max-width: 100vw;
   min-height: 100vh;
+  margin: 0;
+  padding: 0;
 }
